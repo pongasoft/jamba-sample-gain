@@ -46,6 +46,8 @@ set(vst_sources
 
 		${CPP_SOURCES}/GUI/JSGainController.h
 		${CPP_SOURCES}/GUI/JSGainController.cpp
+		${CPP_SOURCES}/GUI/LinkedSliderView.h
+		${CPP_SOURCES}/GUI/LinkedSliderView.cpp
   )
 
 # VST2 is only defined for macOS and Windows
