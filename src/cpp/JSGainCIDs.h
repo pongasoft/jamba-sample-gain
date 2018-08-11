@@ -17,6 +17,12 @@ enum EJSGainParamID : Steinberg::Vst::ParamID
 {
   kBypass = 1000,
 
+  kVuPPM = 2000,
+
+  kLeftGain = 2010,
+  kRightGain = 2011,
+  kLink = 2012
+
 };
 
 // tags associated to custom views (not associated to params)

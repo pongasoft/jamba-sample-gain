@@ -78,6 +78,48 @@ tresult JSGainProcessor::setupProcessing(ProcessSetup &setup)
 }
 
 //------------------------------------------------------------------------
+// processChannel
+//------------------------------------------------------------------------
+template<typename SampleType>
+SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
+                          typename AudioBuffers<SampleType>::Channel iOut,
+                          Gain const &iGain)
+{
+  DCHECK_F(iIn.getNumSamples() == iOut.getNumSamples(), "sanity check on number of samples");
+
+  SampleType max = 0;
+
+  bool silent = true;
+
+  auto numSamples = iIn.getNumSamples();
+  auto inPtr = iIn.getBuffer();
+  auto outPtr = iOut.getBuffer();
+  auto gain = iGain.getValue();
+
+  for(int i = 0; i < numSamples; ++i, inPtr++, outPtr++)
+  {
+    SampleType sample = *inPtr;
+
+    if(gain != Gain::Unity)
+      sample *= gain;
+
+    if(silent && !pongasoft::VST::isSilent(sample))
+      silent = false;
+
+    *outPtr = sample;
+
+    if(sample < 0)
+      sample = -sample;
+
+    max = std::max(sample, max);
+  }
+
+  iOut.setSilenceFlag(silent);
+
+  return max;
+}
+
+//------------------------------------------------------------------------
 // JSGainProcessor::genericProcessInputs
 //------------------------------------------------------------------------
 template<typename SampleType>
@@ -93,10 +135,26 @@ tresult JSGainProcessor::genericProcessInputs(ProcessData &data)
   AudioBuffers<SampleType> out(data.outputs[0], data.numSamples);
 
   // Handling mono or stereo only
-  if(in.getNumChannels() < 1 || in.getNumChannels() > 2 || out.getNumChannels() < 1 || out.getNumChannels() > 2)
+  if(in.getNumChannels() < 1 || in.getNumChannels() > 2 ||
+     out.getNumChannels() < 1 || out.getNumChannels() > 2)
     return kNotImplemented;
 
-  out.copyFrom(in);
+  // in mono case there could be only one channel
+  auto leftChannel = out.getLeftChannel();
+  SampleType leftMax = processChannel<SampleType>(in.getLeftChannel(),
+                                                  leftChannel,
+                                                  fState.fBypass ? UNITY_GAIN : fState.fLeftGain);
+  SampleType rightMax = 0;
+  if(in.getNumChannels() == 2 && out.getNumChannels() == 2)
+  {
+    rightMax = processChannel<SampleType>(in.getRightChannel(),
+                                          out.getRightChannel(),
+                                          fState.fBypass ? UNITY_GAIN : fState.fRightGain);
+  }
+
+  fState.fVuPPM.update(std::max(leftMax, rightMax));
+  if(fState.fVuPPM.hasChanged())
+    fState.fVuPPM.addToOutput(data);
 
   return kResultOk;
 }

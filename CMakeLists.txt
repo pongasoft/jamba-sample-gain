@@ -36,8 +36,10 @@ endif()
 
 set(vst_sources
   	${CPP_SOURCES}/JSGainCIDs.h
-  	${CPP_SOURCES}/JSGainVST3.cpp
+		${CPP_SOURCES}/JSGainModel.h
+		${CPP_SOURCES}/JSGainModel.cpp
 		${CPP_SOURCES}/JSGainPlugin.h
+		${CPP_SOURCES}/JSGainVST3.cpp
 
 		${CPP_SOURCES}/RT/JSGainProcessor.h
 		${CPP_SOURCES}/RT/JSGainProcessor.cpp
