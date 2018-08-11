@@ -33,8 +33,8 @@ public:
 
 protected:
   GUIVstParam<bool> fLink{};
-  GUIVstParam<Gain> fGain{};
-  GUIVstParam<Gain> fLinkedGain{};
+  GUIRawVstParam fGain{};
+  GUIRawVstParam fLinkedGain{};
 
 public:
   class Creator : public TCustomViewCreator<LinkedSliderView>

@@ -25,13 +25,14 @@ void LinkedSliderView::registerParameters()
   fLink = registerVstParam(fParams->fLinkParam);
   if(getTag() == fParams->fLeftGainParam->fParamID)
   {
-    fGain = registerVstParam(fParams->fLeftGainParam, false);
-    fLinkedGain = registerVstParam(fParams->fRightGainParam);
+    fGain = registerRawVstParam(fParams->fLeftGainParam->fParamID, false);
+    fLinkedGain = registerRawVstParam(fParams->fRightGainParam->fParamID);
+
   }
   else
   {
-    fGain = registerVstParam(fParams->fRightGainParam, false);
-    fLinkedGain = registerVstParam(fParams->fLeftGainParam);
+    fGain = registerRawVstParam(fParams->fRightGainParam->fParamID, false);
+    fLinkedGain = registerRawVstParam(fParams->fLeftGainParam->fParamID);
   }
 }
 
@@ -40,20 +41,25 @@ void LinkedSliderView::registerParameters()
 //------------------------------------------------------------------------
 void LinkedSliderView::onParameterChange(ParamID iParamID)
 {
-  if(fLinkedGain->getParamID() == iParamID)
+  if(fLinkedGain.getParamID() == iParamID)
   {
-    if(fLink->getValue())
-      fGain->setValue(fLinkedGain->getValue());
+    if(fLink)
+    {
+      if(fGain != fLinkedGain)
+        fGain.setValue(fLinkedGain);
+    }
     return;
   }
 
-  if(fLink->getParamID() == iParamID)
+  if(fLink.getParamID() == iParamID)
   {
     // case when we went from not linked -> linked
-    if(fLink->getValue())
+    if(fLink)
     {
-      if(fGain->getValue().getValue() < fLinkedGain->getValue().getValue())
-        fGain->setValue(fLinkedGain->getValue());
+      if(fGain.getValue() < fLinkedGain.getValue())
+      {
+        fGain.setValue(fLinkedGain);
+      }
     }
   }
 }
