@@ -19,13 +19,8 @@ public:
 
   constexpr explicit Gain(double iValue = Unity) noexcept : fValue{iValue} {}
 
-  inline double getValue() const { return fValue; }
+  inline double getValueInSample() const { return fValue; }
   inline double getValueInDb() const { return sampleToDb(fValue); }
-  inline ParamValue getNormalizedValue() const
-  {
-    // value = (gain ^ 1/3) * 0.7
-    return std::pow(fValue, 1.0/3) * Factor;
-  }
 
 private:
   double fValue;
@@ -62,13 +57,14 @@ public:
   // normalize
   static ParamValue normalize(Gain const &iGain)
   {
-    return iGain.getNormalizedValue();
+    // value = (gain ^ 1/3) * 0.7
+    return std::pow(iGain.getValueInSample(), 1.0/3) * Gain::Factor;
   }
 
   // toString
   inline static void toString(ParamType const &iValue, String128 iString, int32 iPrecision)
   {
-    auto s = toDbString(iValue.getValue(), iPrecision);
+    auto s = toDbString(iValue.getValueInSample(), iPrecision);
     Steinberg::UString wrapper(iString, str16BufferSize (String128));
     wrapper.fromAscii(s.c_str());
   }

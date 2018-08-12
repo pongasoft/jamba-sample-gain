@@ -27,12 +27,19 @@ void LinkedSliderView::registerParameters()
   {
     fGain = registerRawVstParam(fParams->fLeftGainParam->fParamID, false);
     fLinkedGain = registerRawVstParam(fParams->fRightGainParam->fParamID);
-
   }
   else
   {
-    fGain = registerRawVstParam(fParams->fRightGainParam->fParamID, false);
-    fLinkedGain = registerRawVstParam(fParams->fLeftGainParam->fParamID);
+    if(getTag() == fParams->fRightGainParam->fParamID)
+    {
+      fGain = registerRawVstParam(fParams->fRightGainParam->fParamID, false);
+      fLinkedGain = registerRawVstParam(fParams->fLeftGainParam->fParamID);
+    }
+    else
+    {
+      fGain = unregisterParam(fGain);
+      fLinkedGain = unregisterParam(fLinkedGain);
+    }
   }
 }
 
@@ -41,12 +48,17 @@ void LinkedSliderView::registerParameters()
 //------------------------------------------------------------------------
 void LinkedSliderView::onParameterChange(ParamID iParamID)
 {
+#if EDITOR_MODE
+  if(!fLink.exists() || !fGain.exists() || !fLinkedGain.exists())
+    return;
+#endif
+
   if(fLinkedGain.getParamID() == iParamID)
   {
     if(fLink)
     {
       if(fGain != fLinkedGain)
-        fGain.setValue(fLinkedGain);
+        fGain.copyValueFrom(fLinkedGain);
     }
     return;
   }
@@ -58,7 +70,7 @@ void LinkedSliderView::onParameterChange(ParamID iParamID)
     {
       if(fGain.getValue() < fLinkedGain.getValue())
       {
-        fGain.setValue(fLinkedGain);
+        fGain.copyValueFrom(fLinkedGain);
       }
     }
   }

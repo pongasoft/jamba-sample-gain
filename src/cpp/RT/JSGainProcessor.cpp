@@ -94,7 +94,7 @@ SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
   auto numSamples = iIn.getNumSamples();
   auto inPtr = iIn.getBuffer();
   auto outPtr = iOut.getBuffer();
-  auto gain = iGain.getValue();
+  auto gain = iGain.getValueInSample();
 
   for(int i = 0; i < numSamples; ++i, inPtr++, outPtr++)
   {
