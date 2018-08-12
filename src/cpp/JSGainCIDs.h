@@ -21,7 +21,11 @@ enum EJSGainParamID : Steinberg::Vst::ParamID
 
   kLeftGain = 2010,
   kRightGain = 2011,
-  kLink = 2012
+  kLink = 2012,
+
+  kResetMax = 2020,
+
+  kStats = 3000
 
 };
 

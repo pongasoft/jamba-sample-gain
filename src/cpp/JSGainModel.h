@@ -1,6 +1,9 @@
 #pragma once
 
 #include <pongasoft/VST/AudioUtils.h>
+#include <pongasoft/Utils/Clock/Clock.h>
+#include <pongasoft/VST/ParamSerializers.h>
+
 #include <pluginterfaces/base/ustring.h>
 #include <string>
 
@@ -70,6 +73,36 @@ public:
   }
 };
 
+struct Stats
+{
+  double fSampleRate{44100};
+  double fMaxSinceReset{0};
+  int64 fResetTime{Clock::getCurrentTimeMillis()};
+};
+
+class StatsParamSerializer
+{
+public:
+  using ParamType = Stats;
+
+  inline static tresult readFromStream(IBStreamer &iStreamer, ParamType &oValue)
+  {
+    tresult res = kResultOk;
+
+    res |= IBStreamHelper::readDouble(iStreamer, oValue.fSampleRate);
+    res |= IBStreamHelper::readDouble(iStreamer, oValue.fMaxSinceReset);
+    res |= IBStreamHelper::readInt64(iStreamer, oValue.fResetTime);
+    return res;
+  }
+
+  inline static tresult writeToStream(const ParamType &iValue, IBStreamer &oStreamer)
+  {
+    oStreamer.writeDouble(iValue.fSampleRate);
+    oStreamer.writeDouble(iValue.fMaxSinceReset);
+    oStreamer.writeInt64(iValue.fResetTime);
+    return kResultOk;
+  }
+};
 
 }
 }

@@ -54,11 +54,26 @@ public:
         .guiOwned()
         .add();
 
+    // toggle to reset max
+    fResetMaxParam =
+      vst<BooleanParamConverter>(EJSGainParamID::kResetMax, STR16 ("Reset Max"))
+        .defaultValue(false)
+        .shortTitle(STR16 ("Reset"))
+        .add();
+
     // vuPPM
     fVuPPMParam =
       vst<RawParamConverter>(EJSGainParamID::kVuPPM, STR16 ("VuPPM"))
         .transient()
         .shortTitle(STR16 ("VuPPM"))
+        .add();
+
+    // stats
+    fStatsParam =
+      jmb<StatsParamSerializer>(EJSGainParamID::kStats, STR16("Stats"))
+        .transient()
+        .rtOwned()
+        .shared()
         .add();
 
   }
@@ -67,6 +82,7 @@ public:
   VstParam<bool> fBypassParam;
   VstParam<Gain> fLeftGainParam;
   VstParam<Gain> fRightGainParam;
+  VstParam<bool> fResetMaxParam;
 
   // transient
   VstParam<ParamValue> fVuPPMParam;
@@ -75,6 +91,7 @@ public:
   VstParam<bool> fLinkParam;
 
   // used to communicate data from the processing to the UI
+  JmbParam<Stats> fStatsParam;
 };
 
 using namespace RT;
@@ -87,7 +104,9 @@ public:
     fBypass{add(iParams.fBypassParam)},
     fLeftGain{add(iParams.fLeftGainParam)},
     fRightGain{add(iParams.fRightGainParam)},
-    fVuPPM{add(iParams.fVuPPMParam)}
+    fVuPPM{add(iParams.fVuPPMParam)},
+    fResetMax{add(iParams.fResetMaxParam)},
+    fStats{addJmbOut(iParams.fStatsParam)}
   {
   }
 
@@ -96,11 +115,13 @@ public:
   RTVstParam<bool> fBypass;
   RTVstParam<Gain> fLeftGain;
   RTVstParam<Gain> fRightGain;
+  RTVstParam<bool> fResetMax;
 
   // transient state
   RTVstParam<ParamValue> fVuPPM;
 
   // messaging
+  RTJmbOutParam<Stats> fStats;
 };
 
 using namespace GUI;
@@ -109,11 +130,13 @@ class JSGainGUIState : public GUIPluginState<JSGainParameters>
 {
 public:
   explicit JSGainGUIState(JSGainParameters const &iParams) :
-    GUIPluginState(iParams)
+    GUIPluginState(iParams),
+    fStats{add(iParams.fStatsParam)}
   {};
 
 public:
   // messaging
+  GUIJmbParam<Stats> fStats;
 };
 
 }

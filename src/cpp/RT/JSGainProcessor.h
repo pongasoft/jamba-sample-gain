@@ -38,6 +38,8 @@ public:
   // This is where the setup happens which depends on sample rate, etc..
   tresult PLUGIN_API setupProcessing(ProcessSetup &setup) override;
 
+  tresult setActive(TBool state) override;
+
 protected:
   /**
    * Processes inputs (step 2 always called after processing the parameters)
@@ -50,6 +52,9 @@ protected:
 
   // processInputs64Bits
   tresult processInputs64Bits(ProcessData &data) override { return genericProcessInputs<Sample64>(data); }
+
+  // handleMax
+  void handleMax(ProcessData &data, double iCurrentMax);
 
 private:
   JSGainParameters fParameters;

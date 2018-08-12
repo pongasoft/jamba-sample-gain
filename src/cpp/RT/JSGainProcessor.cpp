@@ -74,8 +74,32 @@ tresult JSGainProcessor::setupProcessing(ProcessSetup &setup)
          setup.maxSamplesPerBlock,
          setup.sampleRate);
 
+  fState.fStats->fSampleRate = setup.sampleRate;
+
   return result;
 }
+
+//------------------------------------------------------------------------
+// processChannel
+//------------------------------------------------------------------------
+tresult JSGainProcessor::setActive(TBool state)
+{
+  tresult result = RTProcessor::setActive(state);
+
+  if(result != kResultOk)
+    return result;
+
+  if(state)
+  {
+    fState.fStats->fMaxSinceReset = 0;
+    fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
+    
+    fState.fStats.enqueueUpdate();
+  }
+
+  return result;
+}
+
 
 //------------------------------------------------------------------------
 // processChannel
@@ -152,11 +176,35 @@ tresult JSGainProcessor::genericProcessInputs(ProcessData &data)
                                           fState.fBypass ? UNITY_GAIN : fState.fRightGain);
   }
 
-  fState.fVuPPM.update(std::max(leftMax, rightMax));
+  handleMax(data, std::max(leftMax, rightMax));
+
+  return kResultOk;
+}
+
+//------------------------------------------------------------------------
+// JSGainProcessor::handleMax
+//------------------------------------------------------------------------
+void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
+{
+  fState.fVuPPM.update(iCurrentMax);
   if(fState.fVuPPM.hasChanged())
     fState.fVuPPM.addToOutput(data);
 
-  return kResultOk;
+  if(fState.fResetMax)
+  {
+    fState.fStats->fMaxSinceReset = 0;
+    fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
+    fState.fStats.enqueueUpdate();
+  }
+  else
+  {
+    if(fState.fStats->fMaxSinceReset < iCurrentMax)
+    {
+      fState.fStats->fMaxSinceReset = iCurrentMax;
+      fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
+      fState.fStats.enqueueUpdate();
+    }
+  }
 }
 
 }
