@@ -94,7 +94,7 @@ tresult JSGainProcessor::setActive(TBool state)
     fState.fStats->fMaxSinceReset = 0;
     fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
     
-    fState.fStats.enqueueUpdate();
+    fState.fStats.broadcast();
   }
 
   return result;
@@ -141,6 +141,19 @@ SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
   iOut.setSilenceFlag(silent);
 
   return max;
+}
+
+//------------------------------------------------------------------------
+// JSGainProcessor::processInputs
+//------------------------------------------------------------------------
+tresult JSGainProcessor::processInputs(ProcessData &data)
+{
+  if(fState.fUIMessage.hasChanged())
+  {
+    DLOG_F(INFO, "Received message from UI <%s> / timestamp = %lld", fState.fUIMessage->fText, fState.fUIMessage->fTimestamp);
+  }
+
+  return RTProcessor::processInputs(data);
 }
 
 //------------------------------------------------------------------------
@@ -194,7 +207,7 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
   {
     fState.fStats->fMaxSinceReset = 0;
     fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
-    fState.fStats.enqueueUpdate();
+    fState.fStats.broadcast();
   }
   else
   {
@@ -202,10 +215,11 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
     {
       fState.fStats->fMaxSinceReset = iCurrentMax;
       fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
-      fState.fStats.enqueueUpdate();
+      fState.fStats.broadcast();
     }
   }
 }
+
 
 }
 }

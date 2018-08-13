@@ -104,6 +104,35 @@ public:
   }
 };
 
+struct UIMessage
+{
+  int64 fTimestamp{Clock::getCurrentTimeMillis()};
+  char fText[64]{}; // NO memory allocation for RT!!
+};
+
+class UIMessageParamSerializer
+{
+public:
+  using ParamType = UIMessage;
+  using TextSerializer = CStringParamSerializer<64>;
+
+  inline static tresult readFromStream(IBStreamer &iStreamer, ParamType &oValue)
+  {
+    tresult res = kResultOk;
+
+    res |= IBStreamHelper::readInt64(iStreamer, oValue.fTimestamp);
+    res |= TextSerializer::readFromStream(iStreamer, oValue.fText);
+    return res;
+  }
+
+  inline static tresult writeToStream(const ParamType &iValue, IBStreamer &oStreamer)
+  {
+    oStreamer.writeInt64(iValue.fTimestamp);
+    TextSerializer::writeToStream(iValue.fText, oStreamer);
+    return kResultOk;
+  }
+};
+
 }
 }
 }

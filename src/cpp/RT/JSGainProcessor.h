@@ -41,6 +41,9 @@ public:
   tresult setActive(TBool state) override;
 
 protected:
+
+  tresult processInputs(ProcessData &data) override;
+
   /**
    * Processes inputs (step 2 always called after processing the parameters)
    */

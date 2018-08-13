@@ -25,7 +25,10 @@ enum EJSGainParamID : Steinberg::Vst::ParamID
 
   kResetMax = 2020,
 
-  kStats = 3000
+  kInputText = 2030,
+
+  kStats = 3000,
+  kUIMessage = 3010,
 
 };
 

@@ -6,12 +6,17 @@
 #include <pongasoft/VST/Parameters.h>
 #include <pongasoft/VST/RT/RTState.h>
 #include <pongasoft/VST/GUI/GUIState.h>
+#include <pongasoft/VST/GUI/Params/GUIParamSerializers.h>
 
 #include <pluginterfaces/vst/ivstaudioprocessor.h>
 
 namespace pongasoft {
 namespace VST {
 namespace JSGain {
+
+using namespace GUI::Params;
+
+using UTF8StringSerializer = UTF8StringParamSerializer<128>;
 
 class JSGainParameters : public Parameters
 {
@@ -76,6 +81,20 @@ public:
         .shared()
         .add();
 
+    // the free form input text
+    fInputTextParam =
+      jmb<UTF8StringSerializer>(EJSGainParamID::kInputText, STR16("Input Text"))
+        .guiOwned()
+        .defaultValue("Hello from GUI")
+        .add();
+
+    // UI Message
+    fUIMessageParam =
+      jmb<UIMessageParamSerializer>(EJSGainParamID::kUIMessage, STR16("UIMessage"))
+        .guiOwned()
+        .transient()
+        .shared()
+        .add();
   }
 
   // saved
@@ -89,9 +108,13 @@ public:
 
   // UI Only
   VstParam<bool> fLinkParam;
+  JmbParam<UTF8String> fInputTextParam;
 
-  // used to communicate data from the processing to the UI
+  // used to communicate data from RT to UI
   JmbParam<Stats> fStatsParam;
+
+  // used to communicate data from UI to RT
+  JmbParam<UIMessage> fUIMessageParam;
 };
 
 using namespace RT;
@@ -106,7 +129,8 @@ public:
     fRightGain{add(iParams.fRightGainParam)},
     fVuPPM{add(iParams.fVuPPMParam)},
     fResetMax{add(iParams.fResetMaxParam)},
-    fStats{addJmbOut(iParams.fStatsParam)}
+    fStats{addJmbOut(iParams.fStatsParam)},
+    fUIMessage{addJmbIn(iParams.fUIMessageParam)}
   {
   }
 
@@ -122,6 +146,7 @@ public:
 
   // messaging
   RTJmbOutParam<Stats> fStats;
+  RTJmbInParam<UIMessage> fUIMessage;
 };
 
 using namespace GUI;
@@ -131,12 +156,18 @@ class JSGainGUIState : public GUIPluginState<JSGainParameters>
 public:
   explicit JSGainGUIState(JSGainParameters const &iParams) :
     GUIPluginState(iParams),
-    fStats{add(iParams.fStatsParam)}
+    fInputText{add(iParams.fInputTextParam)},
+    fStats{add(iParams.fStatsParam)},
+    fUIMessage{add(iParams.fUIMessageParam)}
   {};
 
 public:
+  // GUI owned / saved to GUI state
+  GUIJmbParam<UTF8String> fInputText;
+
   // messaging
   GUIJmbParam<Stats> fStats;
+  GUIJmbParam<UIMessage> fUIMessage;
 };
 
 }

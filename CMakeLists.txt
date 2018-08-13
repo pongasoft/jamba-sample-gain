@@ -46,6 +46,8 @@ set(vst_sources
 
 		${CPP_SOURCES}/GUI/JSGainController.h
 		${CPP_SOURCES}/GUI/JSGainController.cpp
+		${CPP_SOURCES}/GUI/JSGainSendMessageView.h
+		${CPP_SOURCES}/GUI/JSGainSendMessageView.cpp
 		${CPP_SOURCES}/GUI/JSGainStatsView.h
 		${CPP_SOURCES}/GUI/JSGainStatsView.cpp
 		${CPP_SOURCES}/GUI/LinkedSliderView.h
