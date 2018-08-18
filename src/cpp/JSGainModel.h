@@ -6,6 +6,7 @@
 
 #include <pluginterfaces/base/ustring.h>
 #include <string>
+#include <pongasoft/VST/ParamConverters.h>
 
 namespace pongasoft {
 namespace VST {
@@ -39,15 +40,13 @@ std::string toDbString(double iSample, int iPrecision = 2);
 /**
  * Gain
  */
-class GainParamConverter
+class GainParamConverter : public IParamConverter<Gain>
 {
 public:
-  using ParamType = Gain;
-
   /**
    * Gain uses an x^3 curve with 0.7 (Param Value) being unity gain
    */
-  static Gain denormalize(ParamValue value)
+  Gain denormalize(ParamValue value) const override
   {
     if(std::fabs(value - Gain::Factor) < 1e-5)
       return Gain{};
@@ -58,14 +57,14 @@ public:
   }
 
   // normalize
-  static ParamValue normalize(Gain const &iGain)
+  ParamValue normalize(Gain const &iGain) const override
   {
     // value = (gain ^ 1/3) * 0.7
     return std::pow(iGain.getValueInSample(), 1.0/3) * Gain::Factor;
   }
 
   // toString
-  inline static void toString(ParamType const &iValue, String128 iString, int32 iPrecision)
+  inline void toString(ParamType const &iValue, String128 iString, int32 iPrecision) const override
   {
     auto s = toDbString(iValue.getValueInSample(), iPrecision);
     Steinberg::UString wrapper(iString, str16BufferSize (String128));
@@ -80,12 +79,10 @@ struct Stats
   int64 fResetTime{Clock::getCurrentTimeMillis()};
 };
 
-class StatsParamSerializer
+class StatsParamSerializer : public IParamSerializer<Stats>
 {
 public:
-  using ParamType = Stats;
-
-  inline static tresult readFromStream(IBStreamer &iStreamer, ParamType &oValue)
+  inline tresult readFromStream(IBStreamer &iStreamer, ParamType &oValue) const override
   {
     tresult res = kResultOk;
 
@@ -95,12 +92,17 @@ public:
     return res;
   }
 
-  inline static tresult writeToStream(const ParamType &iValue, IBStreamer &oStreamer)
+  inline tresult writeToStream(const ParamType &iValue, IBStreamer &oStreamer) const override
   {
     oStreamer.writeDouble(iValue.fSampleRate);
     oStreamer.writeDouble(iValue.fMaxSinceReset);
     oStreamer.writeInt64(iValue.fResetTime);
     return kResultOk;
+  }
+
+  void writeToStream(ParamType const &iValue, std::ostream &oStream) const override
+  {
+    oStream << toDbString(iValue.fMaxSinceReset);
   }
 };
 
@@ -110,27 +112,32 @@ struct UIMessage
   char fText[64]{}; // NO memory allocation for RT!!
 };
 
-class UIMessageParamSerializer
+class UIMessageParamSerializer : public IParamSerializer<UIMessage>
 {
 public:
-  using ParamType = UIMessage;
-  using TextSerializer = CStringParamSerializer<64>;
-
-  inline static tresult readFromStream(IBStreamer &iStreamer, ParamType &oValue)
+  inline tresult readFromStream(IBStreamer &iStreamer, ParamType &oValue) const override
   {
     tresult res = kResultOk;
 
     res |= IBStreamHelper::readInt64(iStreamer, oValue.fTimestamp);
-    res |= TextSerializer::readFromStream(iStreamer, oValue.fText);
+    res |= fTextSerializer.readFromStream(iStreamer, oValue.fText);
     return res;
   }
 
-  inline static tresult writeToStream(const ParamType &iValue, IBStreamer &oStreamer)
+  inline tresult writeToStream(const ParamType &iValue, IBStreamer &oStreamer) const override
   {
     oStreamer.writeInt64(iValue.fTimestamp);
-    TextSerializer::writeToStream(iValue.fText, oStreamer);
+    fTextSerializer.writeToStream(iValue.fText, oStreamer);
     return kResultOk;
   }
+
+  inline void writeToStream(ParamType const &iValue, std::ostream &oStream) const override
+  {
+    fTextSerializer.writeToStream(iValue.fText, oStream);
+  }
+
+private:
+  CStringParamSerializer<64> fTextSerializer{};
 };
 
 }

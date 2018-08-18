@@ -22,6 +22,10 @@ public:
   // getGUIState
   GUIState *getGUIState() override { return &fState; }
 
+protected:
+  tresult initialize(FUnknown *context) override;
+
+public:
   //--- ---------------------------------------------------------------------
   // create function required for Plug-in factory,
   // it will be called to create new instances of this controller

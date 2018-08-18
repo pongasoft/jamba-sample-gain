@@ -1,4 +1,7 @@
 #include <pongasoft/VST/AudioBuffer.h>
+#include <pongasoft/VST/Debug/ParamTable.h>
+#include <pongasoft/VST/Debug/ParamLine.h>
+
 
 #include "JSGainProcessor.h"
 
@@ -18,6 +21,10 @@ JSGainProcessor::JSGainProcessor() : RTProcessor(JSGainControllerUID),
                                      fState{fParameters}
 {
   DLOG_F(INFO, "JSGainProcessor() - jamba: %s - plugin: v%s", JAMBA_GIT_VERSION_STR, FULL_VERSION_STR);
+
+#ifndef NDEBUG
+  DLOG_F(INFO, "Parameters ---> \n%s", Debug::ParamTable::from(fParameters).full().toString().c_str());
+#endif
 }
 
 //------------------------------------------------------------------------
@@ -43,6 +50,13 @@ tresult JSGainProcessor::initialize(FUnknown *context)
 
   addAudioInput(STR16 ("Stereo In"), SpeakerArr::kStereo);
   addAudioOutput(STR16 ("Stereo Out"), SpeakerArr::kStereo);
+
+#ifndef NDEBUG
+  using Key = Debug::ParamDisplay::Key;
+  DLOG_F(INFO, "RT Save State - Version=%d --->\n%s",
+         fParameters.getRTSaveStateOrder().fVersion,
+         Debug::ParamTable::from(getRTState(), true).keys({Key::kID, Key::kTitle}).full().toString().c_str());
+#endif
 
   return result;
 }
@@ -151,6 +165,17 @@ tresult JSGainProcessor::processInputs(ProcessData &data)
   if(fState.fUIMessage.hasChanged())
   {
     DLOG_F(INFO, "Received message from UI <%s> / timestamp = %lld", fState.fUIMessage->fText, fState.fUIMessage->fTimestamp);
+
+#ifndef NDEBUG
+    auto command = std::string(fState.fUIMessage->fText);
+
+    if(command == "$state" || command == "$rtState")
+    {
+      DLOG_F(INFO, "rt - command=%s --->\n%s",
+             fState.fUIMessage->fText,
+             Debug::ParamTable::from(getRTState()).full().toString().c_str());
+    }
+#endif
   }
 
   return RTProcessor::processInputs(data);

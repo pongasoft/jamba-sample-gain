@@ -8,6 +8,11 @@
 #include <pongasoft/VST/GUI/GUIState.h>
 #include <pongasoft/VST/GUI/Params/GUIParamSerializers.h>
 
+#ifndef NDEBUG
+#include <pongasoft/VST/Debug/ParamLine.h>
+#include <pongasoft/VST/Debug/ParamTable.h>
+#endif
+
 #include <pluginterfaces/vst/ivstaudioprocessor.h>
 
 namespace pongasoft {
@@ -147,6 +152,21 @@ public:
   // messaging
   RTJmbOutParam<Stats> fStats;
   RTJmbInParam<UIMessage> fUIMessage;
+
+#ifndef NDEBUG
+protected:
+  void afterReadNewState(NormalizedState *iState) override
+  {
+    DLOG_F(INFO, "RTState::read - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
+    //Debug::ParamTable::from(this, true).showCellSeparation().print(*iState, "RTState::read ---> ");
+  }
+
+  void beforeWriteNewState(NormalizedState *iState) override
+  {
+    DLOG_F(INFO, "RTState::write - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
+    //Debug::ParamTable::from(this, true).showCellSeparation().print(*iState, "RTState::write ---> ");
+  }
+#endif
 };
 
 using namespace GUI;
@@ -168,6 +188,32 @@ public:
   // messaging
   GUIJmbParam<Stats> fStats;
   GUIJmbParam<UIMessage> fUIMessage;
+
+#ifndef NDEBUG
+protected:
+  tresult readGUIState(IBStreamer &iStreamer) override
+  {
+    tresult res = GUIState::readGUIState(iStreamer);
+    if(res == kResultOk)
+    {
+      DLOG_F(INFO, "GUIState::read - %s", Debug::ParamLine::from(this, true).toString().c_str());
+      //Debug::ParamTable::from(this, true).showCellSeparation().print("GUIState::read ---> ");
+    }
+    return res;
+  }
+
+  tresult writeGUIState(IBStreamer &oStreamer) const override
+  {
+    tresult res = GUIState::writeGUIState(oStreamer);
+    if(res == kResultOk)
+    {
+      DLOG_F(INFO, "GUIState::write - %s", Debug::ParamLine::from(this, true).toString().c_str());
+      //Debug::ParamTable::from(this, true).showCellSeparation().print("GUIState::write ---> ");
+    }
+    return res;
+  }
+#endif
+
 };
 
 }
