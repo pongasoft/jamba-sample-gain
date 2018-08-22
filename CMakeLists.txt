@@ -94,7 +94,7 @@ set(test_sources ${test_sources}
 		${LOGURU_IMPL}
 		${CPP_SOURCES}/JSGainModel.cpp # add whichever cpp you need or ${vst_sources} for all
   )
-set(test_libs base sdk jamba)
+set(test_libs base sdk vstgui_support jamba)
 
 jamba_add_test(${target}_test "${TEST_SRC_FILES}" "${test_sources}" "${test_libs}")
 

@@ -62,14 +62,10 @@ The following steps describes (for each platform) how to build the plugin for de
 
 ### macOS
 
-- Create a folder for the build and `cd` to it (for simplicity I am creating it at the root of the source tree, but can obviously be *outside* the source tree entirely):
+- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-        mkdir -p build/Debug
+        ./configure.sh Debug
         cd build/Debug
-
-- Generate the Makefile(s): provide the path to the *source* of this project (which contains `CMakeLists.txt`):
-
-        cmake -DCMAKE_BUILD_TYPE=Debug ../..
 
 - In order to build the plugin run:
 
@@ -94,14 +90,10 @@ The following steps describes (for each platform) how to build the plugin for de
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
 
 ### Windows
-- Create a folder for the build and `cd` to it (for simplicity I am creating it at the root of the source tree, but can obviously be *outside* the source tree entirely):
+- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-      mkdir build
-      cd build
-
-- Generate the Makefile(s): provide the path to the *source* of this project (which contains `CMakeLists.txt`):
-
-      cmake -G"Visual Studio 15 2017 Win64" -DCMAKE_CXX_FLAGS=/D_SILENCE_TR1_NAMESPACE_DEPRECATION_WARNING ../
+        ./configure.bat
+        cd build
 
 - In order to build the plugin run:
 

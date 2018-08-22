@@ -9,19 +9,46 @@ while [ -h "$SOURCE" ]; do
 done
 BASEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
-mkdir -p build/Release
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Generating Makefiles...                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
+${BASEDIR}/configure.sh Release
+
 cd build/Release
 
-if [ -n "${VST3_SDK_ROOT}" ]; then
-  DVST3_SDK_ROOT="-DVST3_SDK_ROOT=${VST3_SDK_ROOT}"
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Running tests..........                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
+./test.sh
+if [ $? -eq 0 ]
+then
+  echo "[Tests ran successfully]"
+else
+  echo "Failure while running tests... aborting..."
+  exit 1
 fi
 
-cmake ${DVST3_SDK_ROOT} -DCMAKE_BUILD_TYPE=Release ${BASEDIR}
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Validating plugin......                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
+./validate.sh
+if [ $? -eq 0 ]
+then
+  echo "[Validation ran successfully]"
+else
+  echo "Failure while validating plugin... aborting..."
+  exit 1
+fi
 
-# builds and runs the test
-cmake --build . --target pongasoft_JambaSampleGain_test
-cmake --build . --target jamba_test
-ctest
-
-# builds the archive
+echo "============================================================="
+echo "==                                                         =="
+echo "==              Building archive.......                    =="
+echo "==              -----------------------                    =="
+echo "============================================================="
 cmake --build . --target archive
