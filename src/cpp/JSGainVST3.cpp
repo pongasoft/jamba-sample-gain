@@ -1,3 +1,9 @@
+//------------------------------------------------------------------------------------------------------------
+// This file contains the standard boilerplate code that VST3 sdk requires to instantiate the plugin
+// components: it uses the unique IDs declared in JSGainCIDs.h and references the factory methods
+// (createInstance) for the processor and the controller. BEGIN_FACTORY_DEF, and other macros are coming from
+// the vst3 sdk
+//------------------------------------------------------------------------------------------------------------
 
 #include "JSGainCIDs.h"
 

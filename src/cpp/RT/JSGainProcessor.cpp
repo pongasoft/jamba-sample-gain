@@ -1,3 +1,6 @@
+//------------------------------------------------------------------------
+// This file contains the RT (Real Time) processor code
+//------------------------------------------------------------------------
 #include <pongasoft/VST/AudioBuffer.h>
 #include <pongasoft/VST/Debug/ParamTable.h>
 #include <pongasoft/VST/Debug/ParamLine.h>
@@ -14,7 +17,9 @@ namespace JSGain {
 namespace RT {
 
 //------------------------------------------------------------------------
-// JSGainProcessor::JSGainProcessor
+// Constructor
+// Note how the super constructor is expecting the UID of the controller
+// that way you won't forget to initialize it!
 //------------------------------------------------------------------------
 JSGainProcessor::JSGainProcessor() : RTProcessor(JSGainControllerUID),
                                      fParameters{},
@@ -22,13 +27,14 @@ JSGainProcessor::JSGainProcessor() : RTProcessor(JSGainControllerUID),
 {
   DLOG_F(INFO, "JSGainProcessor() - jamba: %s - plugin: v%s", JAMBA_GIT_VERSION_STR, FULL_VERSION_STR);
 
+  // in Debug mode we display the parameters in a table
 #ifndef NDEBUG
   DLOG_F(INFO, "Parameters ---> \n%s", Debug::ParamTable::from(fParameters).full().toString().c_str());
 #endif
 }
 
 //------------------------------------------------------------------------
-// JSGainProcessor::~JSGainProcessor
+// Destructor - purely for debugging purposes
 //------------------------------------------------------------------------
 JSGainProcessor::~JSGainProcessor()
 {
@@ -36,21 +42,31 @@ JSGainProcessor::~JSGainProcessor()
 }
 
 //------------------------------------------------------------------------
-// JSGainProcessor::initialize
+// JSGainProcessor::initialize - define your input/outputs
 //------------------------------------------------------------------------
 tresult JSGainProcessor::initialize(FUnknown *context)
 {
   DLOG_F(INFO, "JSGainProcessor::initialize()");
 
+  //------------------------------------------------------------------------
+  // DO NOT FORGET TO INITIALIZE THE SUPERCLASS! It initializes the state
+  //------------------------------------------------------------------------
   tresult result = RTProcessor::initialize(context);
   if(result != kResultOk)
   {
     return result;
   }
 
+  //------------------------------------------------------------------------
+  // This is where you define inputs and outputs
+  //------------------------------------------------------------------------
   addAudioInput(STR16 ("Stereo In"), SpeakerArr::kStereo);
   addAudioOutput(STR16 ("Stereo Out"), SpeakerArr::kStereo);
 
+  //------------------------------------------------------------------------
+  // In debug mode this code displays the order in which the RT parameters
+  // will be saved
+  //------------------------------------------------------------------------
 #ifndef NDEBUG
   using Key = Debug::ParamDisplay::Key;
   DLOG_F(INFO, "RT Save State - Version=%d --->\n%s",
@@ -62,7 +78,7 @@ tresult JSGainProcessor::initialize(FUnknown *context)
 }
 
 //------------------------------------------------------------------------
-// JSGainProcessor::terminate
+// JSGainProcessor::terminate - purely for debugging purposes
 //------------------------------------------------------------------------
 tresult JSGainProcessor::terminate()
 {
@@ -73,6 +89,8 @@ tresult JSGainProcessor::terminate()
 
 //------------------------------------------------------------------------
 // JSGainProcessor::setupProcessing
+// This is where the sample rate is being assigned => we copy the value
+// into the stats
 //------------------------------------------------------------------------
 tresult JSGainProcessor::setupProcessing(ProcessSetup &setup)
 {
@@ -88,35 +106,49 @@ tresult JSGainProcessor::setupProcessing(ProcessSetup &setup)
          setup.maxSamplesPerBlock,
          setup.sampleRate);
 
+  //------------------------------------------------------------------------
+  // Note that fState.fStats is a JmbParam but you can still access it
+  // as if it were the Stats class (overloaded -> operator magic!)
+  //------------------------------------------------------------------------
   fState.fStats->fSampleRate = setup.sampleRate;
 
   return result;
 }
 
 //------------------------------------------------------------------------
-// processChannel
+// JSGainProcessor::setActive
 //------------------------------------------------------------------------
-tresult JSGainProcessor::setActive(TBool state)
+tresult JSGainProcessor::setActive(TBool iActive)
 {
-  tresult result = RTProcessor::setActive(state);
+  tresult result = RTProcessor::setActive(iActive);
 
   if(result != kResultOk)
     return result;
 
-  if(state)
+  //------------------------------------------------------------------------
+  // The DAW calls this method before calling process when the plugin becomes
+  // active. This is a good place to initialize the stats
+  //------------------------------------------------------------------------
+  if(iActive)
   {
     fState.fStats->fMaxSinceReset = 0;
     fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
-    
+
+    //------------------------------------------------------------------------
+    // This is how easy it is to send the stats to the GUI...
+    //------------------------------------------------------------------------
     fState.fStats.broadcast();
   }
 
   return result;
 }
 
-
 //------------------------------------------------------------------------
-// processChannel
+// processChannel => implements the business logic on a single channel
+// (left or right). Uses the AudioBuffers and Channel helper classes
+// provided by Jamba. The logic is pretty simple: iterate over each sample,
+// multiply by the gain and keep track of the absolute max (peak value) and
+// silence flag.
 //------------------------------------------------------------------------
 template<typename SampleType>
 SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
@@ -152,6 +184,7 @@ SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
     max = std::max(sample, max);
   }
 
+  // use convenient call on the buffer to set the silence flag appropriately
   iOut.setSilenceFlag(silent);
 
   return max;
@@ -162,10 +195,17 @@ SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
 //------------------------------------------------------------------------
 tresult JSGainProcessor::processInputs(ProcessData &data)
 {
+  // Detect the fact that the GUI has sent a message to the RT. At this stage Jamba has already
+  // extracted the message and made it available to RT.
   if(fState.fUIMessage.hasChanged())
   {
     DLOG_F(INFO, "Received message from UI <%s> / timestamp = %lld", fState.fUIMessage->fText, fState.fUIMessage->fTimestamp);
 
+    //------------------------------------------------------------------------
+    // For a bit of "fun", the message is interpreted as a command to display
+    // the current RT state. Note how this block is being executed only in
+    // Debug mode as this is allocating memory in RT!
+    //------------------------------------------------------------------------
 #ifndef NDEBUG
     auto command = std::string(fState.fUIMessage->fText);
 
@@ -183,6 +223,9 @@ tresult JSGainProcessor::processInputs(ProcessData &data)
 
 //------------------------------------------------------------------------
 // JSGainProcessor::genericProcessInputs
+// Implementation of the generic (32 and 64 bits) logic.
+// Note how the Vst params (fState.fBypass and fState.fxxxGain are being
+// used naturally as if they were their underlying type (bool and Gain).
 //------------------------------------------------------------------------
 template<typename SampleType>
 tresult JSGainProcessor::genericProcessInputs(ProcessData &data)
@@ -225,6 +268,14 @@ tresult JSGainProcessor::genericProcessInputs(ProcessData &data)
 void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
 {
   fState.fVuPPM.update(iCurrentMax);
+
+  //------------------------------------------------------------------------
+  // Vst params keep the previous (meaning the value the last time the
+  // process method was called) so that it is easy to see if it has changed
+  // during this frame. Jamba automatically update previous at the end of
+  // the current frame.
+  //------------------------------------------------------------------------
+
   if(fState.fVuPPM.hasChanged())
     fState.fVuPPM.addToOutput(data);
 
@@ -232,6 +283,10 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
   {
     fState.fStats->fMaxSinceReset = 0;
     fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
+
+    //------------------------------------------------------------------------
+    // This is how easy it is to send the stats to the GUI...
+    //------------------------------------------------------------------------
     fState.fStats.broadcast();
   }
   else

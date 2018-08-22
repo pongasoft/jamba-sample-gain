@@ -1,3 +1,6 @@
+//------------------------------------------------------------------------
+// This file contains the controller code
+//------------------------------------------------------------------------
 #include "JSGainController.h"
 
 namespace pongasoft {
@@ -6,7 +9,9 @@ namespace JSGain {
 namespace GUI {
 
 //------------------------------------------------------------------------
-// JSGainController::JSGainController
+// Constructor
+// Note how the super constructor is expecting the xml file which defines
+// the layout and look and feel of the plugin
 //------------------------------------------------------------------------
 JSGainController::JSGainController() : GUIController("JSGain.uidesc"),
                                        fParameters{},
@@ -16,7 +21,7 @@ JSGainController::JSGainController() : GUIController("JSGain.uidesc"),
 }
 
 //------------------------------------------------------------------------
-// JSGainController::JSGainController
+// Destructor - purely for debugging purposes
 //------------------------------------------------------------------------
 JSGainController::~JSGainController()
 {
@@ -30,6 +35,10 @@ tresult JSGainController::initialize(FUnknown *context)
 {
   tresult res = GUIController::initialize(context);
 
+  //------------------------------------------------------------------------
+  // In debug mode this code displays the order in which the GUI parameters
+  // will be saved
+  //------------------------------------------------------------------------
 #ifndef NDEBUG
   if(res == kResultOk)
   {

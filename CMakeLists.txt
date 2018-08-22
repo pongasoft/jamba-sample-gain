@@ -92,9 +92,11 @@ jamba_create_archive(${target} JambaSampleGain)
 file(GLOB_RECURSE TEST_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} test/cpp/*cpp)
 set(test_sources ${test_sources}
 		${LOGURU_IMPL}
+		${CPP_SOURCES}/JSGainModel.cpp # add whichever cpp you need or ${vst_sources} for all
   )
+set(test_libs base sdk vstgui_support jamba)
 
-jamba_add_test(${PROJECT_NAME}_test "${TEST_SRC_FILES}" "${test_sources}" "")
+jamba_add_test(${target}_test "${TEST_SRC_FILES}" "${test_sources}" "${test_libs}")
 
 ###################################################
 # Dev help
