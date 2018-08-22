@@ -35,7 +35,7 @@
 		<attributes SelectedRow="1" name="UITagsDataSource"/>
 	</custom>
 	<bitmaps>
-		<bitmap name="background" path="/Volumes/Development/github/org.pongasoft/jamba-sample-gain/resource/background.png"/>
+		<bitmap name="background" path="background.png"/>
 		<bitmap name="slider_background" path="slider_background.png"/>
 		<bitmap name="slider_handle" path="slider_handle.png"/>
 		<bitmap name="slider_handle_2.0x" path="slider_handle_2.0x.png" scale-factor="2"/>

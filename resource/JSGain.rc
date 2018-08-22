@@ -15,8 +15,8 @@ background.png			PNG  "background.png"
 // Version
 /////////////////////////////////////////////////////////////////////////////
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION MAJOR_VERSION_INT,SUB_VERSION_INT,RELEASE_NUMBER_INT,BUILD_NUMBER_INT
- PRODUCTVERSION MAJOR_VERSION_INT,SUB_VERSION_INT,RELEASE_NUMBER_INT,BUILD_NUMBER_INT
+ FILEVERSION MAJOR_VERSION_INT,MINOR_VERSION_INT,PATCH_NUMBER_INT
+ PRODUCTVERSION MAJOR_VERSION_INT,MINOR_VERSION_INT,PATCH_NUMBER_INT
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -39,7 +39,6 @@ BEGIN
             VALUE "ProductName",      stringFileDescription"\0"
             VALUE "CompanyName",      stringCompanyName"\0"
             VALUE "LegalCopyright",   stringLegalCopyright"\0"
-            VALUE "LegalTrademarks",  stringLegalTrademarks"\0"
             //VALUE "PrivateBuild",     " \0"
             //VALUE "SpecialBuild",     " \0"
             //VALUE "Comments",         " \0"
@@ -50,4 +49,3 @@ BEGIN
         VALUE "Translation", 0x400, 1252
     END
 END
-
