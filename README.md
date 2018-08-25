@@ -4,6 +4,10 @@ The goal of this project is to serve as documentation for the [Jamba](https://gi
 
 If you just want to build the project then skip to [Configuration](#configuration).
 
+This is what the plugin looks like:
+
+![JSGain](images/JSGain.png "JSGain Plugin")
+
 Concepts
 --------
 Jamba is a set of helpers (classes, concepts, build files, etc...) built on top of the VST SDK to provide a lightweight framework to build a VST2/3 plugin.
