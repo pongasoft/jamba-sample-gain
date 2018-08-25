@@ -5,7 +5,7 @@ option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
 option(SMTG_CREATE_VST3_LINK "" OFF)
 
 set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
-set(JAMBA_GIT_TAG 09c340734785fbe469fa3b4a678ed7b934d2665a CACHE STRING "Jamba git tag" FORCE)
+set(JAMBA_GIT_TAG v2.0.0 CACHE STRING "Jamba git tag" FORCE)
 
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 0)
@@ -15,7 +15,7 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 project(JambaSampleGain)
 
 # for working on the framework at the same time...
-set(JAMBA_ROOT_DIR ../jamba)
+#set(JAMBA_ROOT_DIR ../jamba)
 
 if(NOT JAMBA_ROOT_DIR)
 	include(jamba.cmake)
