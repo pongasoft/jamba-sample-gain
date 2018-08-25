@@ -106,12 +106,6 @@ tresult JSGainProcessor::setupProcessing(ProcessSetup &setup)
          setup.maxSamplesPerBlock,
          setup.sampleRate);
 
-  //------------------------------------------------------------------------
-  // Note that fState.fStats is a JmbParam but you can still access it
-  // as if it were the Stats class (overloaded -> operator magic!)
-  //------------------------------------------------------------------------
-  fState.fStats->fSampleRate = setup.sampleRate;
-
   return result;
 }
 
@@ -131,16 +125,29 @@ tresult JSGainProcessor::setActive(TBool iActive)
   //------------------------------------------------------------------------
   if(iActive)
   {
-    fState.fStats->fMaxSinceReset = 0;
-    fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
-
-    //------------------------------------------------------------------------
-    // This is how easy it is to send the stats to the GUI...
-    //------------------------------------------------------------------------
-    fState.fStats.broadcast();
+    resetStats();
   }
 
   return result;
+}
+
+//------------------------------------------------------------------------
+// JSGainProcessor::resetStats
+//------------------------------------------------------------------------
+void JSGainProcessor::resetStats()
+{
+  // we reset the max
+  fState.fMaxSinceReset = 0;
+
+  Stats stats{};
+  stats.fSampleRate = processSetup.sampleRate;
+  stats.fMaxSinceReset = fState.fMaxSinceReset;
+  stats.fResetTime = Clock::getCurrentTimeMillis();
+
+  //------------------------------------------------------------------------
+  // This is how easy it is to send the stats to the GUI...
+  //------------------------------------------------------------------------
+  fState.fStats.broadcast(stats);
 }
 
 //------------------------------------------------------------------------
@@ -195,11 +202,11 @@ SampleType processChannel(typename AudioBuffers<SampleType>::Channel const &iIn,
 //------------------------------------------------------------------------
 tresult JSGainProcessor::processInputs(ProcessData &data)
 {
-  // Detect the fact that the GUI has sent a message to the RT. At this stage Jamba has already
-  // extracted the message and made it available to RT.
-  if(fState.fUIMessage.hasChanged())
+  // Detect the fact that the GUI has sent a message to the RT.
+  auto uiMessage = fState.fUIMessage.pop();
+  if(uiMessage)
   {
-    DLOG_F(INFO, "Received message from UI <%s> / timestamp = %lld", fState.fUIMessage->fText, fState.fUIMessage->fTimestamp);
+    DLOG_F(INFO, "Received message from UI <%s> / timestamp = %lld", uiMessage->fText, uiMessage->fTimestamp);
 
     //------------------------------------------------------------------------
     // For a bit of "fun", the message is interpreted as a command to display
@@ -207,12 +214,12 @@ tresult JSGainProcessor::processInputs(ProcessData &data)
     // Debug mode as this is allocating memory in RT!
     //------------------------------------------------------------------------
 #ifndef NDEBUG
-    auto command = std::string(fState.fUIMessage->fText);
+    auto command = std::string(uiMessage->fText);
 
     if(command == "$state" || command == "$rtState")
     {
       DLOG_F(INFO, "rt - command=%s --->\n%s",
-             fState.fUIMessage->fText,
+             uiMessage->fText,
              Debug::ParamTable::from(getRTState()).full().toString().c_str());
     }
 #endif
@@ -281,24 +288,27 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
 
   if(fState.fResetMax)
   {
-    fState.fStats->fMaxSinceReset = 0;
-    fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
-
-    //------------------------------------------------------------------------
-    // This is how easy it is to send the stats to the GUI...
-    //------------------------------------------------------------------------
-    fState.fStats.broadcast();
+    resetStats();
   }
   else
   {
-    if(fState.fStats->fMaxSinceReset < iCurrentMax)
+    if(fState.fMaxSinceReset < iCurrentMax)
     {
-      fState.fStats->fMaxSinceReset = iCurrentMax;
-      fState.fStats->fResetTime = Clock::getCurrentTimeMillis();
-      fState.fStats.broadcast();
+      fState.fMaxSinceReset = iCurrentMax;
+
+      //------------------------------------------------------------------------
+      // This is another way to use the broadcast API which does not incur an
+      // and additional copy (like the one used in resetStats)
+      //------------------------------------------------------------------------
+      fState.fStats.broadcast([this](Stats *oStats) {
+        oStats->fSampleRate = processSetup.sampleRate;
+        oStats->fMaxSinceReset = fState.fMaxSinceReset;
+        oStats->fResetTime = Clock::getCurrentTimeMillis();
+      });
     }
   }
 }
+
 
 
 }

@@ -271,6 +271,13 @@ public:
   RTJmbOutParam<Stats> fStats;         // RT sends the stats out (broadcast) => RTJmbOutParam
   RTJmbInParam<UIMessage> fUIMessage;  // RT receives UI message from GUI => RTJmbInParam
 
+  //------------------------------------------------------------------------
+  // This class is just a regular C++ class so you can also use it to store
+  // other parts of the state necessary for the plugin. Note that Jamba
+  // will not do anything about it.
+  //------------------------------------------------------------------------
+  double fMaxSinceReset{};
+
 public:
   //------------------------------------------------------------------------
   // The constructor initializes each parameter by calling the appropriate
@@ -297,7 +304,7 @@ public:
 #ifndef NDEBUG
 protected:
   // afterReadNewState
-  void afterReadNewState(NormalizedState *iState) override
+  void afterReadNewState(NormalizedState const *iState) override
   {
     // swap the commented line to display either on a line or in a table
     DLOG_F(INFO, "RTState::read - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());
@@ -305,7 +312,7 @@ protected:
   }
 
   // beforeWriteNewState
-  void beforeWriteNewState(NormalizedState *iState) override
+  void beforeWriteNewState(NormalizedState const *iState) override
   {
     // swap the commented line to display either on a line or in a table
     DLOG_F(INFO, "RTState::write - %s", Debug::ParamLine::from(this, true).toString(*iState).c_str());

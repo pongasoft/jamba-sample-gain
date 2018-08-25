@@ -91,6 +91,9 @@ protected:
   // handleMax -- internal method which will update the stats
   void handleMax(ProcessData &data, double iCurrentMax);
 
+  // internal call to reset the stats
+  void resetStats();
+
 private:
   // The processor gets its own copy of the parameters (defined in JSGainPlugin.h)
   JSGainParameters fParameters;
