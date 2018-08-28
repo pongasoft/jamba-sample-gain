@@ -15,28 +15,19 @@ Echo ==              -----------------------                    ==
 Echo =============================================================
 cmake -G"Visual Studio 15 2017 Win64" %SRC_DIR%
 
-REM Compiling tests
-cmake --build . --config Release --target pongasoft_JambaSampleGain_test
-
 Echo =============================================================
 Echo ==                                                         ==
 Echo ==              Running Tests..........                    ==
 Echo ==              -----------------------                    ==
 Echo =============================================================
-ctest -C Release
-
-REM Compiling Plugin
-cmake --build . --config Release --target pongasoft_JambaSampleGain 
-
-REM Compiling validator
-cmake --build . --config Release --target validator
+%SRC_DIR%\test.bat Release
 
 Echo =============================================================
 Echo ==                                                         ==
 Echo ==              Validating Plugin......                    ==
 Echo ==              -----------------------                    ==
 Echo =============================================================
-.\bin\Release\validator.exe VST3\Release\pongasoft_JambaSampleGain.vst3 
+%SRC_DIR%\validate.bat Release
 
 Echo =============================================================
 Echo ==                                                         ==

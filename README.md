@@ -4,6 +4,8 @@ The goal of this project is to serve as documentation for the [Jamba](https://gi
 
 If you just want to build the project then skip to [Configuration](#configuration).
 
+If you want to create a plugin on your, own check [Generating a blank plugin](https://github.com/pongasoft/jamba/blob/master/README.md#generating-a-blank-plugin) which generates all the files and boilerplate code to quickly start.
+
 This is what the plugin looks like:
 
 ![JSGain](images/JSGain.png "JSGain Plugin")
@@ -191,10 +193,15 @@ Creating archive (release)
 
 A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder.
 
-2018-08-25 - Status for tag `v1.0.0`
-------------------------------------
+Release Notes
+-------------
 
+### 2018-08-28 - `v1.0.1`
+* changed build-prod.bat to use scripts
+
+### 2018-08-25 - `v1.0.0`
 * first public release / free / open source
+
 
 Misc
 ----
