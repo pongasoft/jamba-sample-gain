@@ -235,7 +235,7 @@ public:
 // is going to use. Think about Parameters as an "interface" or declaration of the parameters (name, type
 // etc...) and RTState as the implementation or usage of the parameters (actual value). This state is
 // readily available in the RT processor code thus allowing to write code like if(fState.fBypass) or
-// if(fState.fResetMax.hasChange()), etc... Only rtOwned parameters can be used by this class.
+// if(fState.fResetMax.hasChanged()), etc... Only rtOwned parameters can be used by this class.
 //
 // This class is used in RT/JSGainProcessor.h
 //------------------------------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ protected:
 using namespace GUI;
 
 //------------------------------------------------------------------------------------------------------------
-// This class which inherits from pongasoft::VST:GUI::GUIState defines the parameters that the GUI code
+// This class which inherits from pongasoft::VST:GUI::GUIPluginState defines the parameters that the GUI code
 // is going to use. Think about Parameters as an "interface" or declaration of the parameters (name, type
 // etc...) and GUIState as the implementation or usage of the parameters (actual value). This state/class is
 // readily available in the GUI code (views). Check the various view classes under GUI for examples.

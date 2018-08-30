@@ -298,7 +298,7 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
 
       //------------------------------------------------------------------------
       // This is another way to use the broadcast API which does not incur an
-      // and additional copy (like the one used in resetStats)
+      // additional copy (like the one used in resetStats)
       //------------------------------------------------------------------------
       fState.fStats.broadcast([this](Stats *oStats) {
         oStats->fSampleRate = processSetup.sampleRate;

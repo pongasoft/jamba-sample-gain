@@ -4,7 +4,7 @@ The goal of this project is to serve as documentation for the [Jamba](https://gi
 
 If you just want to build the project then skip to [Configuration](#configuration).
 
-If you want to create a plugin on your, own check [Generating a blank plugin](https://github.com/pongasoft/jamba/blob/master/README.md#generating-a-blank-plugin) which generates all the files and boilerplate code to quickly start.
+If you want to create your own plugin, check [Quick Starting Guide](https://github.com/pongasoft/jamba#quick-starting-guide).
 
 This is what the plugin looks like:
 
