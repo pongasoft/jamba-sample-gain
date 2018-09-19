@@ -126,25 +126,29 @@ The following steps describes (for each platform) how to build the plugin for de
         ./configure.sh Debug
         cd build/Debug
 
-- In order to build the plugin run:
+- In order to build the plugin:
 
         ./build.sh
 
-- In order to test the plugin (unit tests) run:
+- In order to test the plugin (unit tests):
 
         ./test.sh
 
-- In order to validate the plugin (uses validator) run:
+- In order to validate the plugin (uses validator):
 
         ./validate.sh
 
-- In order to edit the plugin UI (uses editor) run:
+- In order to edit the plugin UI (uses editor):
 
         ./edit.sh
 
 - In order to install the plugin locally run (~/Library/Audio/Plug-Ins/VST for VST2 and ~/Library/Audio/Plug-Ins/VST3 for VST3):
 
         ./install.sh
+
+- In order to create the archive (zip file):
+
+        ./archive.sh
 
 Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
 
@@ -155,24 +159,29 @@ Because this project uses `cmake` you can also generate an Xcode project by usin
         ./configure.bat
         cd build
 
-- In order to build the plugin run:
+- In order to build the plugin:
 
         For Debug => ./build.bat
         For Release => ./build.bat Release
 
-- In order to test the plugin (unit tests) run:
+- In order to test the plugin (unit tests):
 
         For Debug => ./test.bat
         For Release => ./test.bat Release
 
-- In order to validate the plugin (uses validator) run:
+- In order to validate the plugin (uses validator):
 
         For Debug => ./validate.bat
         For Release => ./validate.bat Release
 
-- In order to edit the plugin UI (uses editor) run:
+- In order to edit the plugin UI (uses editor) (editor is **not** available in `Release` mode):
 
-        ./edit.sh
+        ./edit.bat
+
+- In order to create the archive (zip file) (`Release` is the default because in general the archive is created for the production ready plugin):
+
+        For Debug => ./archive.bat Debug
+        For Release => ./archive.bat
 
 
 - In order to install the plugin:
@@ -191,7 +200,7 @@ Because this project uses `cmake` you can also generate an Xcode project by usin
 Creating archive (release)
 --------------------------
 
-A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder.
+A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder. You can also use the `archive.sh` (resp. `archive.bat`) script.
 
 Release Notes
 -------------
