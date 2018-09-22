@@ -54,7 +54,7 @@ if(MAC OR WIN)
 endif()
 
 set(target pongasoft_JambaSampleGain)
-smtg_add_vst3plugin(${target} ${VST3_SDK_ROOT} ${vst_sources})
+jamba_add_vst3plugin(${target} "${vst_sources}")
 target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
 target_link_libraries(${target} PRIVATE base sdk vstgui_support jamba)
 
@@ -72,9 +72,6 @@ elseif(WIN)
   jamba_gen_vst3_resource_rc("${CMAKE_BINARY_DIR}/generated/vst3_resources.rc")
   target_sources(${target} PRIVATE resource/JSGain.rc)
 endif()
-
-# fix for vst2
-jamba_fix_vst2(${target})
 
 ###################################################
 # Create archive (.tgz)
