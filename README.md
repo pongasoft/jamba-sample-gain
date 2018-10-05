@@ -87,7 +87,7 @@ Once the plugin is running, you can right click on the background and select "Op
 
 Configuration
 -------------
-This project is known to work on macOS High Siera 10.13.3 with Xcode 9.2 installed. It also has been tested on Windows 10 64 bits and Visual Studio Build tools (2017). It requires `cmake` version 3.12 at the minimum. Because it uses `cmake` it should work on other platforms but it has not been tested.
+This project is known to work on macOS High Sierra 10.13.3 with Xcode 9.2 installed. It also has been tested on Windows 10 64 bits and Visual Studio Build tools (2017). It requires `cmake` version 3.12 at the minimum. Linux is currently not supported (could be added if there is demand).
 
 ### Downloading the SDK
 
@@ -114,93 +114,77 @@ In order to build both VST2 and VST3 at the same time, you need to run the follo
     cd C:\Users\Public\Documents\Steinberg\VST_SDK.369
     copy_vst2_to_vst3_sdk.bat
 
-Build this project (debug)
---------------------------
+Build this project
+------------------
 
-The following steps describes (for each platform) how to build the plugin for development (debug mode with logging, etc...)
+The following steps describes (for each platform) how to build the plugin.
 
 ### macOS
 
 - For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-        ./configure.sh Debug
-        cd build/Debug
+        ./configure.sh
+        cd build
 
-- In order to build the plugin:
+- In order to build, test, validate, etc... simply use the `jamba.sh` script like this:
 
-        ./build.sh
+         ./jamba.sh -h
+         Usage:  jamba.sh [-hdrn] <command>
 
-- In order to test the plugin (unit tests):
+           -h : usage help
+           -d : use Debug build config (default)
+           -r : use Release build config (Debug if not defined)
+           -n : dry run (prints what it is going to do)
 
-        ./test.sh
+         Commands: 
+           ---- VST Commands ----
+           clean    : clean all builds
+           build    : build the VST plugin
+           edit     : start the GUI editor (Debug only)
+           install  : install the VST plugin in their default location
+           test     : run the unit tests
+           validate : run the VST3 validator
+           ---- Audio Unit Commands ----
+           build-au   : build the Audio Unit wrapper plugin
+           install-au : install the Audio Unit plugin in its default location
+           ---- Generic Commands ----
+           archive : generate the zip file containing the plugin(s) and README/License
+           prod    : run test/validate/archive (default to Release, override with -d)
+           ---- CMake target ----
+           <target> : invoke cmake with the provided target
 
-- In order to validate the plugin (uses validator):
-
-        ./validate.sh
-
-- In order to edit the plugin UI (uses editor):
-
-        ./edit.sh
-
-- In order to install the plugin locally run (~/Library/Audio/Plug-Ins/VST for VST2 and ~/Library/Audio/Plug-Ins/VST3 for VST3):
-
-        ./install.sh
-
-- In order to create the archive (zip file):
-
-        ./archive.sh
-
-Because this project uses `cmake` you can also generate an Xcode project by using the proper generator (`-G Xcode`). You can also load the project directly in CLion.
+Note: You can load the project directly in CLion (since CLion does not support the Xcode cmake generator, you can still work on the plugin but in order to build and install the Audio Unit wrapper you will need to use the command line).
 
 ### Windows
 
-- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
+- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere. Note that PowerShell is highly recommended.
 
-        ./configure.bat
+        .\configure.bat
         cd build
 
-- In order to build the plugin:
+- In order to build, test, validate, etc... simply use the `jamba.bat` script like this:
 
-        For Debug => ./build.bat
-        For Release => ./build.bat Release
+         .\jamba.bat -h
+         Usage:  jamba.bat [-hdrn] <command>
 
-- In order to test the plugin (unit tests):
+           -h : usage help
+           -d : use Debug build config (default)
+           -r : use Release build config (Debug if not defined)
+           -n : dry run (prints what it is going to do)
 
-        For Debug => ./test.bat
-        For Release => ./test.bat Release
-
-- In order to validate the plugin (uses validator):
-
-        For Debug => ./validate.bat
-        For Release => ./validate.bat Release
-
-- In order to edit the plugin UI (uses editor) (editor is **not** available in `Release` mode):
-
-        ./edit.bat
-
-- In order to create the archive (zip file) (`Release` is the default because in general the archive is created for the production ready plugin):
-
-        For Debug => ./archive.bat Debug
-        For Release => ./archive.bat
-
-
-- In order to install the plugin:
-
-  For VST2, copy VST3/JambaSampleGain.vst3 and RENAME into JambaSampleGain.dll under
-  - C:\ProgramFiles\VstPlugins
-  - or any DAW specific path (64bits)
-  - MAKE SURE TO RENAME the file otherwise it will not work
-
-  For VST3, copy JambaSampleGain.vst3 under
-  - C:\Program Files\Common Files\VST3 (may require admin access)
-  - or any DAW specific path (64bits)
-
-
-
-Creating archive (release)
---------------------------
-
-A convenient script (`build-prod.sh` for macOS and `build-prod.bat` for Windows) will invoke the proper commands to build and zip the entire project for production release. This can be run in any directory and will create a `build` folder. You can also use the `archive.sh` (resp. `archive.bat`) script.
+         Commands: 
+           ---- VST Commands ----
+           clean    : clean all builds
+           build    : build the VST plugin
+           edit     : start the GUI editor (Debug only)
+           install  : install the VST plugin in their default location
+           test     : run the unit tests
+           validate : run the VST3 validator
+           ---- Generic Commands ----
+           archive : generate the zip file containing the plugin(s) and README/License
+           prod    : run test/validate/archive (default to Release, override with -d)
+           ---- CMake target ----
+           <target> : invoke cmake with the provided target
 
 Release Notes
 -------------

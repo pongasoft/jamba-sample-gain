@@ -288,8 +288,8 @@ public:
     fBypass{add(iParams.fBypassParam)},
     fLeftGain{add(iParams.fLeftGainParam)},
     fRightGain{add(iParams.fRightGainParam)},
-    fVuPPM{add(iParams.fVuPPMParam)},
     fResetMax{add(iParams.fResetMaxParam)},
+    fVuPPM{add(iParams.fVuPPMParam)},
     fStats{addJmbOut(iParams.fStatsParam)},
     fUIMessage{addJmbIn(iParams.fUIMessageParam)}
   {

@@ -12,8 +12,11 @@
 // Version with build number
 #define FULL_VERSION_STR "@PLUGIN_VERSION@"
 
+// Audio Unit version (as an hex int)
+#define AU_VERSION_INT 0x@AU_PLUGIN_VERSION_HEX@
+
 #define stringOriginalFilename	"JambaSampleGain.vst3"
-#if PLATFORM_64
+#ifdef PLATFORM_64
 #define stringFileDescription	"Jamba Sample Gain plugin by pongasoft (64Bit)"
 #else
 #define stringFileDescription	"Jamba Sample Gain plugin by pongasoft"

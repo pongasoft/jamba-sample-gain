@@ -1,8 +1,10 @@
 cmake_minimum_required (VERSION 3.12)
 
-# build VST 2 by default
-option(SMTG_CREATE_VST2_VERSION "Use VST2" ON)
-option(SMTG_CREATE_VST3_LINK "" OFF)
+# build VST 2?
+option(JAMBA_ENABLE_VST2 "Use VST2" ON)
+
+# build Audio Unit?
+option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 0)
@@ -12,7 +14,7 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 project(JambaSampleGain)
 
 # To disable download/update, you can set those 2 variables to local folders
-#set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
+set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
 #set(GOOGLETEST_ROOT_DIR ../../google/googletest)
 
 include(jamba.cmake)
@@ -58,6 +60,9 @@ jamba_add_vst3plugin(${target} "${vst_sources}")
 target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
 target_link_libraries(${target} PRIVATE base sdk vstgui_support jamba)
 
+###################################################
+# Resources - add your resources here...
+###################################################
 jamba_add_vst3_resource(${target} DATA "JSGain.uidesc")
 jamba_add_vst3_resource(${target} PNG "background.png")
 jamba_add_vst3_resource(${target} PNG "slider_background.png")
@@ -66,12 +71,8 @@ jamba_add_vst3_resource(${target} PNG "slider_handle.png")
 jamba_add_vst3_resource(${target} PNG "vu_off.png")
 jamba_add_vst3_resource(${target} PNG "vu_on.png")
 
-if(MAC)
-  smtg_set_bundle(${target} INFOPLIST "${CMAKE_CURRENT_LIST_DIR}/mac/Info.plist" PREPROCESS)
-elseif(WIN)
-  jamba_gen_vst3_resource_rc("${CMAKE_BINARY_DIR}/generated/vst3_resources.rc")
-  target_sources(${target} PRIVATE resource/JSGain.rc)
-endif()
+# this must be called after you are done calling jamba_add_vst3_resource for all resources
+jamba_gen_vst3_resources(${target} "JambaSampleGain")
 
 ###################################################
 # Create archive (.tgz)
