@@ -189,6 +189,13 @@ Note: You can load the project directly in CLion (since CLion does not support t
 Release Notes
 -------------
 
+### 2018-10-06 - `v1.1.0`
+* use latest version of Jamba (v2.1.0)
+* Generate Audio Unit (wrapper) plugin
+* Upgraded to cmake 3.12
+* Consolidated dev scripts into a single `jamba.sh` (resp `jamba.bat`) script
+* Uses `Xcode` as the cmake generator on macOS
+
 ### 2018-08-28 - `v1.0.1`
 * changed build-prod.bat to use scripts
 

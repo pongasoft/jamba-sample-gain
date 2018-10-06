@@ -8,7 +8,7 @@ if(JAMBA_ROOT_DIR)
 endif()
 
 set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
-set(JAMBA_GIT_TAG v2.0.2 CACHE STRING "Jamba git tag" FORCE)
+set(JAMBA_GIT_TAG v2.1.0 CACHE STRING "Jamba git tag" FORCE)
 
 FetchContent_Declare(jamba
 			GIT_REPOSITORY    ${JAMBA_GIT_REPO}
