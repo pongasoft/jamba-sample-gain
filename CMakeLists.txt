@@ -72,7 +72,7 @@ jamba_add_vst3_resource(${target} PNG "vu_off.png")
 jamba_add_vst3_resource(${target} PNG "vu_on.png")
 
 # this must be called after you are done calling jamba_add_vst3_resource for all resources
-jamba_gen_vst3_resources(${target} "JambaSampleGain")
+jamba_gen_vst3_resources(${target} "JSGain")
 
 ###################################################
 # Create archive (.tgz)
