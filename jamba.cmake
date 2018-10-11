@@ -3,12 +3,14 @@ cmake_minimum_required(VERSION 3.12)
 include(FetchContent)
 
 if(JAMBA_ROOT_DIR)
-  # instructs FetchContent to not download or update but use the location instead
-  set(FETCHCONTENT_SOURCE_DIR_JAMBA ${JAMBA_ROOT_DIR}) 
+	# instructs FetchContent to not download or update but use the location instead
+	set(FETCHCONTENT_SOURCE_DIR_JAMBA ${JAMBA_ROOT_DIR})
+else()
+	set(FETCHCONTENT_SOURCE_DIR_JAMBA "")
 endif()
 
 set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git repository url" FORCE)
-set(JAMBA_GIT_TAG v2.1.0 CACHE STRING "Jamba git tag" FORCE)
+set(JAMBA_GIT_TAG v2.1.2 CACHE STRING "Jamba git tag" FORCE)
 
 FetchContent_Declare(jamba
 			GIT_REPOSITORY    ${JAMBA_GIT_REPO}
