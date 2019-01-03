@@ -189,6 +189,9 @@ Note: You can load the project directly in CLion (since CLion does not support t
 Release Notes
 -------------
 
+### 2019-01-03 - `v1.2.0`
+* use latest version of Jamba (v3.0.0)
+
 ### 2018-10-06 - `v1.1.0`
 * use latest version of Jamba (v2.1.0)
 * Generate Audio Unit (wrapper) plugin

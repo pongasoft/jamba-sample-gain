@@ -35,7 +35,7 @@ void JSGainStatsView::registerParameters()
   // Because it is a Jmb param you register it by using the param in the
   // state.
   //------------------------------------------------------------------------
-  fStatsParam = registerJmbParam(fState->fStats);
+  fStatsParam = registerParam(fState->fStats);
 
   //------------------------------------------------------------------------
   // Create a timer that will fire every 200ms. Note that because it is

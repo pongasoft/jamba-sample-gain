@@ -26,7 +26,7 @@ class JSGainStatsView : public PluginCustomView<JSGainGUIState>, public ITimerCa
 {
 public:
   // Constructor
-  explicit JSGainStatsView(const CRect &iSize) : PluginCustomView(iSize)
+  explicit JSGainStatsView(const CRect &iSize) : PluginCustomView<JSGainGUIState>(iSize)
   {}
 
   //------------------------------------------------------------------------

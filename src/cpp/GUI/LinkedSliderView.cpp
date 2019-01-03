@@ -48,7 +48,7 @@ void LinkedSliderView::registerParameters()
   // in JSGainPlugin.h. fParams is made available through
   // PluginCustomViewAdapter<xxx, JSGainGUIState>
   //------------------------------------------------------------------------
-  fLink = registerVstParam(fParams->fLinkParam);
+  fLink = registerParam(fParams->fLinkParam);
 
   // which slider is this one? Note how we do not use the enumeration but
   // the actual paramID from the parameter.
@@ -164,8 +164,6 @@ public:
   int32_t getLinkTag () const { return fLinkTag; }
   void setLinkedSliderTag (int32_t iTag) { fLinkedSliderTag = iTag; registerParameters(); }
   int32_t getLinkedSliderTag () const { return fLinkedSliderTag; }
-
-  CLASS_METHODS_NOCOPY(GenericLinkedSliderView, CustomViewAdapter<CSlider>)
 
 protected:
   int32_t fLinkTag{-1};
