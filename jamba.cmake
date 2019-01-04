@@ -13,16 +13,16 @@ set(JAMBA_GIT_REPO "https://github.com/pongasoft/jamba" CACHE STRING "Jamba git 
 set(JAMBA_GIT_TAG v3.0.1 CACHE STRING "Jamba git tag" FORCE)
 
 FetchContent_Declare(jamba
-    GIT_REPOSITORY ${JAMBA_GIT_REPO}
-    GIT_TAG ${JAMBA_GIT_TAG}
-    GIT_CONFIG advice.detachedHead=false
-    GIT_SHALLOW true
-    SOURCE_DIR "${CMAKE_BINARY_DIR}/jamba"
-    BINARY_DIR "${CMAKE_BINARY_DIR}/jamba-build"
+    GIT_REPOSITORY    ${JAMBA_GIT_REPO}
+    GIT_TAG           ${JAMBA_GIT_TAG}
+    GIT_CONFIG        advice.detachedHead=false
+    GIT_SHALLOW       true
+    SOURCE_DIR        "${CMAKE_BINARY_DIR}/jamba"
+    BINARY_DIR        "${CMAKE_BINARY_DIR}/jamba-build"
     CONFIGURE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-    TEST_COMMAND ""
+    BUILD_COMMAND     ""
+    INSTALL_COMMAND   ""
+    TEST_COMMAND      ""
     )
 
 FetchContent_GetProperties(jamba)
