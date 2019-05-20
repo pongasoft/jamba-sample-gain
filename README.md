@@ -87,32 +87,7 @@ Once the plugin is running, you can right click on the background and select "Op
 
 Configuration
 -------------
-This project is known to work on macOS High Sierra 10.13.3 with Xcode 9.2 installed. It also has been tested on Windows 10 64 bits and Visual Studio Build tools (2017). It requires `cmake` version 3.12 at the minimum. Linux is currently not supported (could be added if there is demand).
-
-### Downloading the SDK
-
-You need to download the VST3 SDK version 3.6.9 from [steinberg](https://download.steinberg.net/sdk_downloads/vstsdk369_01_03_2018_build_132.zip) (shasum 256 => `7c6c2a5f0bcbf8a7a0d6a42b782f0d3c00ec8eafa4226bbf2f5554e8cd764964`). Note that 3.6.10 was released in June 2018 but at this time, this project uses 3.6.9.
-
-### Installing the SDK
-
-Unpack the SDK to the following location (note how I renamed it with the version number)
-
-* `/Users/Shared/Steinberg/VST_SDK.369` for macOS
-* `C:\Users\Public\Documents\Steinberg\VST_SDK.369` for windows.
-
-You can also store in a different location and use the `VST3_SDK_ROOT` variable when using cmake to define its location.
-
-### Configuring the SDK
-
-In order to build both VST2 and VST3 at the same time, you need to run the following commands
-
-    # for macOS
-    cd /Users/Shared/Steinberg/VST_SDK.369
-    ./copy_vst2_to_vst3_sdk.sh
-
-    # for Windows
-    cd C:\Users\Public\Documents\Steinberg\VST_SDK.369
-    copy_vst2_to_vst3_sdk.bat
+Follow the [instructions](https://github.com/pongasoft/jamba#step-1-install-the-vst3-sdk) (Step 1 only) for downloading and installing the SDK.
 
 Build this project
 ------------------
@@ -145,8 +120,9 @@ The following steps describes (for each platform) how to build the plugin.
            test     : run the unit tests
            validate : run the VST3 validator
            ---- Audio Unit Commands ----
-           build-au   : build the Audio Unit wrapper plugin
-           install-au : install the Audio Unit plugin in its default location
+           build-au    : build the Audio Unit wrapper plugin
+           install-au  : install the Audio Unit plugin in its default location
+           validate-au : run the Audio Unit validator
            ---- Generic Commands ----
            archive : generate the zip file containing the plugin(s) and README/License
            prod    : run test/validate/archive (default to Release, override with -d)
@@ -189,6 +165,10 @@ Note: You can load the project directly in CLion (since CLion does not support t
 Release Notes
 -------------
 
+### 2019-05-20 - `v1.2.1`
+* updated README
+* use latest version of Jamba (v3.2.1)
+
 ### 2019-01-03 - `v1.2.0`
 * use latest version of Jamba (v3.0.0)
 
@@ -209,7 +189,7 @@ Release Notes
 Misc
 ----
 
-This project uses [loguru](https://github.com/emilk/loguru) for logging (included under `src/cpp/logging`)
+This project uses [loguru](https://github.com/emilk/loguru) for logging.
 
 Licensing
 ---------
