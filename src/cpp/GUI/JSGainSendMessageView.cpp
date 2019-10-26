@@ -3,10 +3,7 @@
 //------------------------------------------------------------------------
 #include "JSGainSendMessageView.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 /*
  * This is how this view is defined in the XML file.
@@ -15,51 +12,35 @@ namespace GUI {
  */
 
 //------------------------------------------------------------------------
-// JSGainSendMessageView::setControlValue - In the case of
-// MomentaryButtonView the value of the control is a boolean which
-// specifies whether the button is pressed (true) or not (false). This
-// is used to trigger sending the message
+// onClick - this is the callback to implement to handle what to do
+// when the button is pressed
 //------------------------------------------------------------------------
-void JSGainSendMessageView::setControlValue(const bool &iControlValue)
+void JSGainSendMessageView::onClick()
 {
-  TCustomControlView::setControlValue(iControlValue);
+  UIMessage msg{};
+  //------------------------------------------------------------------------
+  // We simply use the state directly
+  //------------------------------------------------------------------------
+  auto const &text = fState->fInputText.getValue();
+  text.copy(msg.fText, sizeof(msg.fText) / sizeof(msg.fText[0]));
 
-  if(iControlValue)
+  //------------------------------------------------------------------------
+  // This is how easy it is to send the message to the RT...
+  // broadcast(msg) is a shortcut: setValue(msg) then broadcast()
+  //------------------------------------------------------------------------
+  fState->fUIMessage.broadcast(msg);
+
+  //------------------------------------------------------------------------
+  // For a bit of "fun", the message is interpreted as a command to display
+  // the current GUI state.
+  //------------------------------------------------------------------------
+  auto command = std::string(msg.fText);
+  if(command == "$state" || command == "$guiState")
   {
-    UIMessage msg{};
-    //------------------------------------------------------------------------
-    // We simply use the state directly
-    //------------------------------------------------------------------------
-    auto const &text = fState->fInputText.getValue();
-    text.copy(msg.fText, sizeof(msg.fText) / sizeof(msg.fText[0]));
-
-    //------------------------------------------------------------------------
-    // This is how easy it is to send the message to the RT...
-    // broadcast(msg) is a shortcut: setValue(msg) then broadcast()
-    //------------------------------------------------------------------------
-    fState->fUIMessage.broadcast(msg);
-
-    //------------------------------------------------------------------------
-    // For a bit of "fun", the message is interpreted as a command to display
-    // the current GUI state.
-    //------------------------------------------------------------------------
-    auto command = std::string(msg.fText);
-    if(command == "$state" || command == "$guiState")
-    {
-      DLOG_F(INFO, "gui - command=%s --->\n%s",
-             msg.fText,
-             Debug::ParamTable::from(fState).full().toString().c_str());
-    }
+    DLOG_F(INFO, "gui - command=%s --->\n%s",
+           msg.fText,
+           Debug::ParamTable::from(fState).full().toString().c_str());
   }
-}
-
-//------------------------------------------------------------------------
-// JSGainSendMessageView::initState - both classes need to be initialized
-//------------------------------------------------------------------------
-void JSGainSendMessageView::initState(VST::GUI::GUIState *iGUIState)
-{
-  MomentaryButtonView::initState(iGUIState);
-  PluginAccessor::initState(iGUIState);
 }
 
 //------------------------------------------------------------------------
@@ -71,7 +52,4 @@ void JSGainSendMessageView::initState(VST::GUI::GUIState *iGUIState)
 
 JSGainSendMessageView::Creator __gJSGainSendMessageCreator("JSGain::SendMessage", "JSGain - Send Message");
 
-}
-}
-}
 }

@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.12)
+cmake_minimum_required(VERSION 3.12)
 
 # build VST 2?
 option(JAMBA_ENABLE_VST2 "Use VST2" ON)
@@ -6,19 +6,28 @@ option(JAMBA_ENABLE_VST2 "Use VST2" ON)
 # build Audio Unit?
 option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
+# Download VST SDK if not installed?
+option(JAMBA_DOWNLOAD_VSTSDK "Download VST SDK if not installed" ON)
+
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 2)
-set(PLUGIN_PATCH_VERSION 1)
+set(PLUGIN_PATCH_VERSION 2)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project(JambaSampleGain)
 
 # To disable download/update, you can set those 2 variables to local folders
-unset(JAMBA_ROOT_DIR)
-#set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
+#unset(JAMBA_ROOT_DIR)
+set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
 unset(GOOGLETEST_ROOT_DIR)
 #set(GOOGLETEST_ROOT_DIR ../../google/googletest)
 
+# check for existence of default VST3.6.9 install and install it if not found
+if(JAMBA_DOWNLOAD_VSTSDK)
+  include(vst369.cmake)
+endif()
+
+# download jamba framework
 include(jamba.cmake)
 
 set(CPP_SOURCES src/cpp)
@@ -26,11 +35,11 @@ set(CPP_SOURCES src/cpp)
 configure_file(${CPP_SOURCES}/version.h.in ${CMAKE_BINARY_DIR}/generated/version.h)
 include_directories(${CMAKE_BINARY_DIR}/generated/)
 
-if (SMTG_CREATE_VST2_VERSION)
-	set(vst2_sources
-			${CPP_SOURCES}/JSGainVST2.cpp
-			)
-endif()
+if (JAMBA_ENABLE_VST2)
+  set(vst2_sources
+      ${CPP_SOURCES}/JSGainVST2.cpp
+      )
+endif ()
 
 set(vst_sources
   	${CPP_SOURCES}/JSGainCIDs.h
@@ -53,9 +62,9 @@ set(vst_sources
   )
 
 # VST2 is only defined for macOS and Windows
-if(MAC OR WIN)
-	set(vst_sources ${vst_sources} ${vst2_sources})
-endif()
+if (MAC OR WIN)
+  set(vst_sources ${vst_sources} ${vst2_sources})
+endif ()
 
 set(target pongasoft_JambaSampleGain)
 jamba_add_vst3plugin(${target} "${vst_sources}")
@@ -79,7 +88,7 @@ jamba_gen_vst3_resources(${target} "JSGain")
 ###################################################
 # Create archive (.tgz)
 ###################################################
-jamba_create_archive(${target} JambaSampleGain)
+jamba_create_archive(${target} "JambaSampleGain")
 
 ####################################################
 ## Testing

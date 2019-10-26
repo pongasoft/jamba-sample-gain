@@ -5,10 +5,7 @@
 //------------------------------------------------------------------------
 #include "LinkedSliderView.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 /*
  * This is how this view (the left slider in this case) is defined in the XML file.
@@ -22,20 +19,8 @@ namespace GUI {
  */
 
 //------------------------------------------------------------------------
-// LinkedSliderView::setTag - This is called whenever the "control-tag"
-// is changed in the editor or when the XML file is loaded => because the
-// parameters depend on this value we must call registerParameters
-// whenever it changes
-//------------------------------------------------------------------------
-void LinkedSliderView::setTag(int32_t val)
-{
-  CSlider::setTag(val);
-  registerParameters();
-}
-
-//------------------------------------------------------------------------
-// LinkedSliderView::registerParameters - this is called by Jamba (and
-// from setTag) when the parameters need to be registered
+// LinkedSliderView::registerParameters - this is called by Jamba when
+// the parameters need to be registered
 //------------------------------------------------------------------------
 void LinkedSliderView::registerParameters()
 {
@@ -46,7 +31,7 @@ void LinkedSliderView::registerParameters()
   //------------------------------------------------------------------------
   // Note how registering the fLink param uses the actual parameter defined
   // in JSGainPlugin.h. fParams is made available through
-  // PluginCustomViewAdapter<xxx, JSGainGUIState>
+  // StateAwareCustomViewAdapter<xxx, JSGainGUIState>
   //------------------------------------------------------------------------
   fLink = registerParam(fParams->fLinkParam);
 
@@ -71,14 +56,6 @@ void LinkedSliderView::registerParameters()
       // in this case fGain = right, fLinkedGain = left
       fGain = registerRawVstParam(fParams->fRightGainParam->fParamID, false);
       fLinkedGain = registerRawVstParam(fParams->fLeftGainParam->fParamID);
-    }
-    else
-    {
-      // the control-tag has been assigned a parameter that is neither the left
-      // or right one => we simply unregister the previously registered params
-      // Note that this branch of the code should NOT happen in Release mode!
-      fGain = unregisterParam(fGain);
-      fLinkedGain = unregisterParam(fLinkedGain);
     }
   }
 }
@@ -143,107 +120,9 @@ LinkedSliderView::Creator __gLinkedSliderCreator("JSGain::LinkedSlider", "JSGain
 //------------------------------------------------------------------------------------------------------------
 // For the sake of this example plugin, the LinkedSliderView was created non generic to show how you can tie
 // it to the state/params that are defined in JSGainPlugin.h => the wiring (registerParameters) is done in
-// the code. The following class demonstrates how it would be possible to make it completely generic by using
-// tags/paramIDs instead (get/setTag for "this" slider, get/setLinkTag for the toggle, get/setLinkedSlider for
-// the other slider). The wiring is then done using those tags/paramIDs instead of actual params.
+// the code and refers to the params directly (fParams->fLinkParam, fParams->fRightGainParam and
+// fParams->fLeftGainParam). This view could be created entirely generic but this is beyond the scope
+// of this example plugin. The Jamba framework itself has many generic views that can be used as example.
 //------------------------------------------------------------------------------------------------------------
 
-namespace Generic {
-
-class GenericLinkedSliderView : public CustomViewAdapter<CSlider>
-{
-public:
-  explicit GenericLinkedSliderView(const CRect &iSize) :
-    CustomViewAdapter(iSize, nullptr, -1, 0, 0, nullptr, nullptr) {}
-
-  void registerParameters() override;
-  void onParameterChange(ParamID iParamID) override;
-
-  void setTag(int32_t val) override { CSlider::setTag(val); registerParameters(); }
-  void setLinkTag (int32_t iTag) { fLinkTag = iTag; registerParameters(); }
-  int32_t getLinkTag () const { return fLinkTag; }
-  void setLinkedSliderTag (int32_t iTag) { fLinkedSliderTag = iTag; registerParameters(); }
-  int32_t getLinkedSliderTag () const { return fLinkedSliderTag; }
-
-protected:
-  int32_t fLinkTag{-1};
-  int32_t fLinkedSliderTag{-1};
-
-  GUIVstParam<bool> fLink{};
-  GUIRawVstParam fSlider{};
-  GUIRawVstParam fLinkedSlider{};
-
-public:
-  class Creator : public TCustomViewCreator<GenericLinkedSliderView>
-  {
-  public:
-    explicit Creator(char const *iViewName = nullptr, char const *iDisplayName = nullptr) noexcept :
-      TCustomViewCreator(iViewName, iDisplayName, VSTGUI::UIViewCreator::kCSlider)
-    {
-      //------------------------------------------------------------------------
-      // 2 attributes are needed: one for link-tag and one for linked-slider-tag
-      //------------------------------------------------------------------------
-      registerTagAttribute("link-tag", &GenericLinkedSliderView::getLinkTag, &GenericLinkedSliderView::setLinkTag);
-      registerTagAttribute("linked-slider-tag", &GenericLinkedSliderView::getLinkedSliderTag, &GenericLinkedSliderView::setLinkedSliderTag);
-    }
-  };
-};
-
-//------------------------------------------------------------------------
-// GenericLinkedSliderView::registerParameters - use the 3 tags
-//------------------------------------------------------------------------
-void GenericLinkedSliderView::registerParameters()
-{
-  // all must be set to continue
-  if(!fParamCxMgr || getTag() < 0 || getLinkTag() < 0 || getLinkedSliderTag() < 0)
-    return;
-
-  if(getTag() == getLinkedSliderTag())
-  {
-    DLOG_F(ERROR, "this slider and the linked slider must have different tags!");
-    fLink = unregisterParam(fLink);
-    fSlider = unregisterParam(fSlider);
-    fLinkedSlider = unregisterParam(fLinkedSlider);
-  }
-  else
-  {
-    fLink = registerVstParam<bool>(static_cast<ParamID>(getLinkTag()));
-    fSlider = registerRawVstParam(static_cast<ParamID>(getTag()), false);
-    fLinkedSlider = registerRawVstParam(static_cast<ParamID>(getLinkedSliderTag()));
-  }
-}
-
-//------------------------------------------------------------------------
-// GenericLinkedSliderView::onParameterChange - this is the same code
-// as the non generic version!
-//------------------------------------------------------------------------
-void GenericLinkedSliderView::onParameterChange(ParamID iParamID)
-{
-#if EDITOR_MODE
-  if(!fLink.exists() || !fSlider.exists() || !fLinkedSlider.exists())
-    return;
-#endif
-
-  if(fLinkedSlider.getParamID() == iParamID)
-  {
-    if(fLink && fSlider != fLinkedSlider)
-      fSlider.copyValueFrom(fLinkedSlider);
-    return;
-  }
-
-  if(fLink.getParamID() == iParamID)
-  {
-    if(fLink && fSlider.getValue() < fLinkedSlider.getValue())
-      fSlider.copyValueFrom(fLinkedSlider);
-    return;
-  }
-}
-
-// Uncomment to make available
-// GenericLinkedSliderView::Creator __gLinkedSliderCreator("JSGain::GenericLinkedSlider", "JSGain - GenericLinkedSlider");
-}
-
-}
-}
-}
 }

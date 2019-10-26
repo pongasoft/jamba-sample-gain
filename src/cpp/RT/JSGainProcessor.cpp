@@ -11,10 +11,7 @@
 #include "version.h"
 #include "jamba_version.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace RT {
+namespace pongasoft::VST::JSGain::RT {
 
 //------------------------------------------------------------------------
 // Constructor
@@ -311,7 +308,4 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
 
 
 
-}
-}
-}
 }

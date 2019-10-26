@@ -2,9 +2,7 @@
 
 #include <sstream>
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
+namespace pongasoft::VST::JSGain {
 
 //------------------------------------------------------------------------
 // toDbString
@@ -28,6 +26,4 @@ std::string toDbString(double iSample, int iPrecision)
 }
 
 
-}
-}
 }

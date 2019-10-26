@@ -3,10 +3,7 @@
 //------------------------------------------------------------------------
 #include "JSGainController.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 //------------------------------------------------------------------------
 // Constructor
@@ -52,7 +49,4 @@ tresult JSGainController::initialize(FUnknown *context)
   return res;
 }
 
-}
-}
-}
 }

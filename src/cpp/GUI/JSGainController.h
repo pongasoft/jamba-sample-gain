@@ -11,10 +11,7 @@
 #include <pongasoft/VST/GUI/GUIController.h>
 #include "../JSGainPlugin.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 using namespace pongasoft::VST::GUI;
 
@@ -55,8 +52,5 @@ private:
   JSGainGUIState fState;
 };
 
-}
-}
-}
 }
 

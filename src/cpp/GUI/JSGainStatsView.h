@@ -10,10 +10,7 @@
 #include <pongasoft/VST/Timer.h>
 #include "../JSGainPlugin.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 using namespace pongasoft::VST::GUI::Views;
 using namespace VSTGUI;
@@ -22,11 +19,11 @@ using namespace VSTGUI;
 // By inheriting from PluginCustomView<JSGainGUIState>, this view will inherit the default behaviors of
 // pongasoft::VST::GUI::Views::CustomView and add fState and fParams for dealing for parameters/state.
 //------------------------------------------------------------------------------------------------------------
-class JSGainStatsView : public PluginCustomView<JSGainGUIState>, public ITimerCallback
+class JSGainStatsView : public StateAwareCustomView<JSGainGUIState>, public ITimerCallback
 {
 public:
   // Constructor
-  explicit JSGainStatsView(const CRect &iSize) : PluginCustomView<JSGainGUIState>(iSize)
+  explicit JSGainStatsView(const CRect &iSize) : StateAwareCustomView<JSGainGUIState>(iSize)
   {}
 
   //------------------------------------------------------------------------
@@ -88,7 +85,7 @@ public:
   // editor-mode).
   // Check the .cpp to see where/how the creator is instantiated.
   //------------------------------------------------------------------------
-  class Creator : public CustomViewCreator<JSGainStatsView, CustomView>
+  class Creator : public CustomViewCreator<JSGainStatsView, StateAwareCustomView<JSGainGUIState>>
   {
   public:
     explicit Creator(char const *iViewName = nullptr, char const *iDisplayName = nullptr) noexcept :
@@ -109,7 +106,4 @@ public:
 
 };
 
-}
-}
-}
 }

@@ -7,20 +7,23 @@
 #include <pluginterfaces/base/funknown.h>
 #include <pluginterfaces/vst/vsttypes.h>
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-
-// generated with java/groovy UUID.randomUUID()
+namespace pongasoft::VST::JSGain {
 
 //------------------------------------------------------------------------
 // These 2 IDs are used in JSGainVST2.cpp and JSGainVST3.cpp to create
 // the processor (RT) and controller (GUI). Note that those IDs must be
 // unique. You can use an online generator like https://www.guidgenerator.com
 // to generate them. Those were generated with java UUID.randomUUID().
+// Using different ids for Debug/Release targets so that both plugins can live
+// side by side.
 //------------------------------------------------------------------------
+#ifndef NDEBUG
+static const ::Steinberg::FUID JSGainProcessorUID(0xf4be5771, 0x557944a9, 0x8fa175ab, 0xaddf4c8a);
+static const ::Steinberg::FUID JSGainControllerUID(0xabda718f, 0x5d564c10, 0xb1921f2f, 0xcf2b8241);
+#else
 static const ::Steinberg::FUID JSGainProcessorUID(0x7788b64f, 0xe2d646df, 0x95297fa4, 0x6dd07e91);
 static const ::Steinberg::FUID JSGainControllerUID(0x7c69960c, 0x09e44de8, 0x8557bcb6, 0x086f8a64);
+#endif
 
 //------------------------------------------------------------------------
 // Thanks to the sharing of parameters with the Jamba framework, this
@@ -52,6 +55,4 @@ enum EJSGainParamID : Steinberg::Vst::ParamID
   kUIMessage = 3010,
 };
 
-} // namespace JSGain
-} // namespace VST
 } // namespace pongasoft

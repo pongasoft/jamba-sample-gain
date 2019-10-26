@@ -27,9 +27,7 @@
 
 #include <pluginterfaces/vst/ivstaudioprocessor.h>
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
+namespace pongasoft::VST::JSGain {
 
 using namespace GUI::Params;
 
@@ -405,6 +403,4 @@ protected:
 
 };
 
-}
-}
 }

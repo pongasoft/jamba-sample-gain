@@ -9,10 +9,7 @@
 #include <chrono>
 #include <sstream>
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 using namespace pongasoft::VST::GUI;
 
@@ -130,7 +127,4 @@ void JSGainStatsView::onTimer(Timer *timer)
 
 JSGainStatsView::Creator __gJSGainStatsCreator("JSGain::Stats", "JSGain - Stats");
 
-}
-}
-}
 }

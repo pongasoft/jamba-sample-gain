@@ -13,9 +13,7 @@
 #include <string>
 #include <pongasoft/VST/ParamConverters.h>
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
+namespace pongasoft::VST::JSGain {
 
 //------------------------------------------------------------------------
 // The Gain class encapsulates the concept of gain which is the multiplier
@@ -211,6 +209,4 @@ private:
   CStringParamSerializer<64> fTextSerializer{};
 };
 
-}
-}
 }

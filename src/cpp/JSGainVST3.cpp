@@ -18,8 +18,11 @@
 
 using namespace Steinberg::Vst;
 
-
+#ifndef NDEBUG
+#define stringPluginName "JambaSampleGain_Debug"
+#else
 #define stringPluginName "JambaSampleGain"
+#endif
 
 //------------------------------------------------------------------------
 //  Module init/exit

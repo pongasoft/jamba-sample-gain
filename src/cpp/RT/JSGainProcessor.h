@@ -10,10 +10,7 @@
 #include <pongasoft/VST/RT/RTProcessor.h>
 #include "../JSGainPlugin.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace RT {
+namespace pongasoft::VST::JSGain::RT {
 
 using namespace pongasoft::VST::RT;
 
@@ -102,8 +99,5 @@ private:
   JSGainRTState fState;
 };
 
-}
-}
-}
 }
 

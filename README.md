@@ -4,7 +4,7 @@ The goal of this project is to serve as documentation for the [Jamba](https://gi
 
 If you just want to build the project then skip to [Configuration](#configuration).
 
-If you want to create your own plugin, check [Quick Starting Guide](https://github.com/pongasoft/jamba#quick-starting-guide).
+If you want to create your own plugin, check [Quick Starting Guide](https://jamba.dev/quickstart/).
 
 This is what the plugin looks like:
 
@@ -87,7 +87,7 @@ Once the plugin is running, you can right click on the background and select "Op
 
 Configuration
 -------------
-Follow the [instructions](https://github.com/pongasoft/jamba#step-1-install-the-vst3-sdk) (Step 1 only) for downloading and installing the SDK.
+The VST SDK will be automatically downloaded during the configure phase. This project requires C++17 and CMake 3.12+. See [Jamba Requirements](https://jamba.dev/requirements/) for more details.
 
 Build this project
 ------------------

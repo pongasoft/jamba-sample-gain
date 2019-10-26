@@ -12,22 +12,19 @@
 
 #include "../JSGainPlugin.h"
 
-namespace pongasoft {
-namespace VST {
-namespace JSGain {
-namespace GUI {
+namespace pongasoft::VST::JSGain::GUI {
 
 using namespace pongasoft::VST::GUI::Views;
 using namespace VSTGUI;
 
 //------------------------------------------------------------------------------------------------------------
-// The PluginCustomViewAdapter templated class is the class that links the VST SDK world to the Jamba world
+// The StateAwareCustomViewAdapter templated class is the class that links the VST SDK world to the Jamba world
 // when you want to inherit the behavior of a class from the SDK. The 1st template parameter is the
 // class you are inheriting from and the 2nd one is the actual state class (which similarly to the RTProcessor
 // code, makes the state available in the code with a member variable called fState and the params with a
 // member variable called fParams)
 //------------------------------------------------------------------------------------------------------------
-class LinkedSliderView : public PluginCustomViewAdapter<CSlider, JSGainGUIState>
+class LinkedSliderView : public StateAwareCustomViewAdapter<CSlider, JSGainGUIState>
 {
 public:
   //------------------------------------------------------------------------
@@ -35,14 +32,8 @@ public:
   // comes from the CSlider constructor but the adapter is smart enough
   // to pass them through.
   //------------------------------------------------------------------------
-  explicit LinkedSliderView(const CRect &iSize) : PluginCustomViewAdapter(iSize, nullptr, -1, 0, 0, nullptr, nullptr)
+  explicit LinkedSliderView(const CRect &iSize) : StateAwareCustomViewAdapter(iSize, nullptr, -1, 0, 0, nullptr, nullptr)
   {}
-
-  //------------------------------------------------------------------------
-  // This method is overridden so that when it is changed in the editor we
-  // can set the fGain and fLinkedGain appropriately
-  //------------------------------------------------------------------------
-  void setTag(int32_t val) override;
 
   //------------------------------------------------------------------------
   // This is the method that registers the parameter with the framework: the
@@ -85,17 +76,14 @@ public:
   // are properly initialized. Finally, check the .cpp to see where/how
   // the creator is instantiated.
   //------------------------------------------------------------------------
-  class Creator : public TCustomViewCreator<LinkedSliderView>
+  class Creator : public CustomViewCreator<LinkedSliderView>
   {
   public:
     explicit Creator(char const *iViewName = nullptr, char const *iDisplayName = nullptr) noexcept :
-      TCustomViewCreator(iViewName, iDisplayName, VSTGUI::UIViewCreator::kCSlider)
+      CustomViewCreator(iViewName, iDisplayName, VSTGUI::UIViewCreator::kCSlider)
     {
     }
   };
 };
 
-}
-}
-}
 }
