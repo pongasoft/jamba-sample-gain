@@ -165,9 +165,14 @@ Note: You can load the project directly in CLion (since CLion does not support t
 Release Notes
 -------------
 
-### 2020-02-10 - `v1.2.2`
+### 2020-02-10 - `v1.2.3`
 * use latest version of Jamba (v4.1.0)
 
+### 2019-10-26 - `v1.2.2`
+* use latest version of Jamba (v4.0.0) / C++17
+* automatically downloads the VST SDK during config
+* use new concepts (like `TextButtonView`)
+* different name/uuid for debug plugin
 
 ### 2019-05-20 - `v1.2.1`
 * updated README
