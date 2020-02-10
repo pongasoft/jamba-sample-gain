@@ -81,10 +81,10 @@ void LinkedSliderView::onParameterChange(ParamID iParamID)
   // case when fLinkedGain has changed
   if(fLinkedGain.getParamID() == iParamID)
   {
-    // if link is enabled (note the use of the wrapper class which acts as a bool)
-    if(fLink)
+    // if link is enabled (note the use of the wrapper class operator * which returns the underlying value (bool))
+    if(*fLink)
     {
-      // different value?
+      // different value? Note the use of != which compares the underlying value
       if(fGain != fLinkedGain)
         // simply copy fLinkedGain to fGain => this will trigger the CSlider to refresh
         fGain.copyValueFrom(fLinkedGain);
@@ -96,11 +96,11 @@ void LinkedSliderView::onParameterChange(ParamID iParamID)
   if(fLink.getParamID() == iParamID)
   {
     // case when we went from not linked -> linked
-    if(fLink)
+    if(*fLink)
     {
       // we decide that the one that has the greatest value is the one who "wins" (arbitrary.. could be the other way
-      // around)
-      if(fGain.getValue() < fLinkedGain.getValue())
+      // around). Note the use of < on params which compares the underlying value
+      if(fGain < fLinkedGain)
       {
         fGain.copyValueFrom(fLinkedGain);
       }

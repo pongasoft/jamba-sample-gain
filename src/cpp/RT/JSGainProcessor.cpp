@@ -252,13 +252,13 @@ tresult JSGainProcessor::genericProcessInputs(ProcessData &data)
   auto leftChannel = out.getLeftChannel();
   SampleType leftMax = processChannel<SampleType>(in.getLeftChannel(),
                                                   leftChannel,
-                                                  fState.fBypass ? UNITY_GAIN : fState.fLeftGain);
+                                                  *fState.fBypass ? UNITY_GAIN : *fState.fLeftGain);
   SampleType rightMax = 0;
   if(in.getNumChannels() == 2 && out.getNumChannels() == 2)
   {
     rightMax = processChannel<SampleType>(in.getRightChannel(),
                                           out.getRightChannel(),
-                                          fState.fBypass ? UNITY_GAIN : fState.fRightGain);
+                                          *fState.fBypass ? UNITY_GAIN : *fState.fRightGain);
   }
 
   handleMax(data, std::max(leftMax, rightMax));
@@ -283,7 +283,7 @@ void JSGainProcessor::handleMax(ProcessData &data, double iCurrentMax)
   if(fState.fVuPPM.hasChanged())
     fState.fVuPPM.addToOutput(data);
 
-  if(fState.fResetMax)
+  if(*fState.fResetMax)
   {
     resetStats();
   }
