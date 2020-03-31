@@ -165,6 +165,9 @@ Note: You can load the project directly in CLion (since CLion does not support t
 Release Notes
 -------------
 
+### 2020-03-31 - `v1.2.4`
+* use latest version of Jamba (v4.3.0)
+
 ### 2020-02-10 - `v1.2.3`
 * use latest version of Jamba (v4.1.0)
 
