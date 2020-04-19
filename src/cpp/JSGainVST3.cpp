@@ -7,22 +7,13 @@
 
 #include "JSGainCIDs.h"
 
-#include <pluginterfaces/vst/ivstcomponent.h>
-#include <pluginterfaces/vst/ivstaudioprocessor.h>
-#include <public.sdk/source/main/pluginfactoryvst3.h>
-#include <pluginterfaces/vst/ivsteditcontroller.h>
-
 #include "version.h"
 #include "RT/JSGainProcessor.h"
 #include "GUI/JSGainController.h"
 
-using namespace Steinberg::Vst;
+#include <pongasoft/VST/PluginFactory.h>
 
-#ifndef NDEBUG
-#define stringPluginName "JambaSampleGain_Debug"
-#else
-#define stringPluginName "JambaSampleGain"
-#endif
+using namespace pongasoft::VST;
 
 //------------------------------------------------------------------------
 //  Module init/exit
@@ -42,36 +33,25 @@ bool DeinitModule()
   return true;
 }
 
-using namespace pongasoft::VST::JSGain;
-
 //------------------------------------------------------------------------
-//  VST Plug-in Entry
+// VST3 Plugin Main entry point
+// This is equivalent to the 'main()' method for an executable in the
+// case of a VST3 plugin. The implementation simply delegates to
+// JambaPluginFactory and use types and conventions to build and wire the right
+// components. Because this plugin is an effect, the category  is set to
+// Vst::PlugType::kFx and can obviously be changed to other values depending
+// on the type of plugin
 //------------------------------------------------------------------------
-BEGIN_FACTORY_DEF ("pongasoft",
-                   "https://www.pongasoft.com",
-                   "mailto:support@pongasoft.com")
-
-    // JSGainProcessor processor
-    DEF_CLASS2 (INLINE_UID_FROM_FUID(JSGainProcessorUID),
-                PClassInfo::kManyInstances,  // cardinality
-                kVstAudioEffectClass,    // the component category (do not changed this)
-                stringPluginName,      // here the Plug-in name (to be changed)
-                Vst::kDistributable,  // means that component and controller could be distributed on different computers
-                "Fx",          // Subcategory for this Plug-in (to be changed)
-                FULL_VERSION_STR,    // Plug-in version (to be changed)
-                kVstVersionString,    // the VST 3 SDK version (do not changed this, use always this define)
-                RT::JSGainProcessor::createInstance)  // function pointer called when this component should be instantiated
-
-    // JSGainController controller
-    DEF_CLASS2 (INLINE_UID_FROM_FUID(JSGainControllerUID),
-                PClassInfo::kManyInstances,  // cardinality
-                kVstComponentControllerClass,// the Controller category (do not changed this)
-                stringPluginName
-                "Controller",  // controller name (could be the same than component name)
-                0,            // not used here
-                "",            // not used here
-                FULL_VERSION_STR,    // Plug-in version (to be changed)
-                kVstVersionString,    // the VST 3 SDK version (do not changed this, use always this define)
-                GUI::JSGainController::createInstance)// function pointer called when this component should be instantiated
-
-END_FACTORY
+EXPORT_FACTORY Steinberg::IPluginFactory* PLUGIN_API GetPluginFactory()
+{
+  return JambaPluginFactory::GetVST3PluginFactory<
+    pongasoft::VST::JSGain::RT::JSGainProcessor,  // processor class (Real Time)
+    pongasoft::VST::JSGain::GUI::JSGainController // controller class (GUI)
+  >("pongasoft",                    // company/vendor
+    "https://www.pongasoft.com",    // url
+    "mailto:support@pongasoft.com", // email
+    stringPluginName,               // plugin name (defined in version.h and depend on Release vs Debug build)
+    FULL_VERSION_STR,               // plugin version (defined in version.h and is built from version value in CMakeLists.txt)
+    Vst::PlugType::kFx              // plugin category (can be changed to other like kInstrument, etc...)
+  );
+}

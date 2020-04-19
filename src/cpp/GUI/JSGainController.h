@@ -24,7 +24,12 @@ class JSGainController : public GUIController
 {
 public:
   //------------------------------------------------------------------------
-  // Factory method used in JSGainVST3.cpp to create the controller
+  // UUID() method used to create the controller
+  //------------------------------------------------------------------------
+  static inline ::Steinberg::FUID UUID() { return JSGainControllerUID; };
+
+  //------------------------------------------------------------------------
+  // Factory method used to create the controller
   //------------------------------------------------------------------------
   static FUnknown *createInstance(void * /*context*/) { return (IEditController *) new JSGainController(); }
 

@@ -23,3 +23,9 @@
 #endif
 #define stringCompanyName		"pongasoft\0"
 #define stringLegalCopyright	"© 2018 pongasoft LLC"
+
+#ifndef NDEBUG
+#define stringPluginName "JambaSampleGain_Debug"
+#else
+#define stringPluginName "JambaSampleGain"
+#endif

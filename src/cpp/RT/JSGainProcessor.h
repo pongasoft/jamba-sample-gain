@@ -23,7 +23,12 @@ class JSGainProcessor : public RTProcessor
 {
 public:
   //------------------------------------------------------------------------
-  // Factory method used in JSGainVST3.cpp to create the processor
+  // UUID() method used to create the processor
+  //------------------------------------------------------------------------
+  static inline ::Steinberg::FUID UUID() { return JSGainProcessorUID; };
+
+  //------------------------------------------------------------------------
+  // Factory method used to create the processor
   //------------------------------------------------------------------------
   static FUnknown *createInstance(void * /*context*/) { return (IAudioProcessor *) new JSGainProcessor(); }
 
