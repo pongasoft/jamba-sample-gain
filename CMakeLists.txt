@@ -17,15 +17,10 @@ set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PAT
 project(JambaSampleGain)
 
 # To disable download/update, you can set those 2 variables to local folders
-unset(JAMBA_ROOT_DIR)
+set(JAMBA_ROOT_DIR "")
 #set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
-unset(GOOGLETEST_ROOT_DIR)
+set(GOOGLETEST_ROOT_DIR "")
 #set(GOOGLETEST_ROOT_DIR ../../google/googletest)
-
-# check for existence of default VST3.6.9 install and install it if not found
-if(JAMBA_DOWNLOAD_VSTSDK)
-  include(vst369.cmake)
-endif()
 
 # download jamba framework
 include(jamba.cmake)
@@ -66,29 +61,26 @@ if (MAC OR WIN)
   set(vst_sources ${vst_sources} ${vst2_sources})
 endif ()
 
-set(target pongasoft_JambaSampleGain)
-jamba_add_vst3plugin(${target} "${vst_sources}")
-target_include_directories(${target} PUBLIC ${VSTGUI_ROOT}/vstgui4)
-target_link_libraries(${target} PRIVATE base sdk vstgui_support jamba)
+# Defining the list of resources
+set(RES_DIR ${CMAKE_CURRENT_LIST_DIR}/resource)
 
-###################################################
-# Resources - add your resources here...
-###################################################
-jamba_add_vst3_resource(${target} DATA "JSGain.uidesc")
-jamba_add_vst3_resource(${target} PNG "background.png")
-jamba_add_vst3_resource(${target} PNG "slider_background.png")
-jamba_add_vst3_resource(${target} PNG "slider_handle_2.0x.png")
-jamba_add_vst3_resource(${target} PNG "slider_handle.png")
-jamba_add_vst3_resource(${target} PNG "vu_off.png")
-jamba_add_vst3_resource(${target} PNG "vu_on.png")
+set(vst_resources
+  "${RES_DIR}/background.png"
+  "${RES_DIR}/slider_background.png"
+  "${RES_DIR}/slider_handle.png"
+  "${RES_DIR}/slider_handle_2.0x.png"
+  "${RES_DIR}/vu_off.png"
+  "${RES_DIR}/vu_on.png"
+  )
 
-# this must be called after you are done calling jamba_add_vst3_resource for all resources
-jamba_gen_vst3_resources(${target} "JSGain")
-
-###################################################
-# Create archive (.tgz)
-###################################################
-jamba_create_archive(${target} "JambaSampleGain")
+jamba_add_vst3_plugin(
+    TARGET pongasoft_JambaSampleGain
+    RELEASE_FILENAME JambaSampleGain
+    TARGETS_PREFIX jmb_
+    VST_SOURCES ${vst_sources}
+    UIDESC "${RES_DIR}/JSGain.uidesc"
+    RESOURCES ${vst_resources}
+)
 
 ####################################################
 ## Testing
@@ -100,9 +92,4 @@ set(test_sources ${test_sources}
   )
 set(test_libs base sdk vstgui_support jamba)
 
-jamba_add_test(${target}_test "${TEST_SRC_FILES}" "${test_sources}" "${test_libs}")
-
-###################################################
-# Dev help
-###################################################
-jamba_dev_scripts(${target})
+jamba_add_test(pongasoft_JambaSampleGain_test "${TEST_SRC_FILES}" "${test_sources}" "${test_libs}")
