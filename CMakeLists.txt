@@ -6,15 +6,12 @@ option(JAMBA_ENABLE_VST2 "Use VST2" ON)
 # build Audio Unit?
 option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
-# Download VST SDK if not installed?
-option(JAMBA_DOWNLOAD_VSTSDK "Download VST SDK if not installed" ON)
-
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 2)
 set(PLUGIN_PATCH_VERSION 5)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
-project(JambaSampleGain)
+project("jamba-sample-gain")
 
 # To disable download/update, you can set those 2 variables to local folders
 set(JAMBA_ROOT_DIR "")
@@ -25,17 +22,22 @@ set(GOOGLETEST_ROOT_DIR "")
 # download jamba framework
 include(jamba.cmake)
 
+# Location of the source files
 set(CPP_SOURCES src/cpp)
 
-configure_file(${CPP_SOURCES}/version.h.in ${CMAKE_BINARY_DIR}/generated/version.h)
-include_directories(${CMAKE_BINARY_DIR}/generated/)
+# Generating the version.h header file which contains the plugin version (to make sure it is in sync with the version
+# defined here)
+set(VERSION_DIR "${CMAKE_BINARY_DIR}/generated")
+configure_file(${CPP_SOURCES}/version.h.in "${VERSION_DIR}/version.h")
 
+# Source files for VST2
 if (JAMBA_ENABLE_VST2)
   set(vst2_sources
       ${CPP_SOURCES}/JSGainVST2.cpp
       )
 endif ()
 
+# Source files for VST3
 set(vst_sources
   	${CPP_SOURCES}/JSGainCIDs.h
 		${CPP_SOURCES}/JSGainModel.h
@@ -56,14 +58,10 @@ set(vst_sources
 		${CPP_SOURCES}/GUI/LinkedSliderView.cpp
   )
 
-# VST2 is only defined for macOS and Windows
-if (MAC OR WIN)
-  set(vst_sources ${vst_sources} ${vst2_sources})
-endif ()
+# Location of resources
+set(RES_DIR "${CMAKE_CURRENT_LIST_DIR}/resource")
 
-# Defining the list of resources
-set(RES_DIR ${CMAKE_CURRENT_LIST_DIR}/resource)
-
+# List of resources (images)
 set(vst_resources
   "${RES_DIR}/background.png"
   "${RES_DIR}/slider_background.png"
@@ -73,23 +71,24 @@ set(vst_resources
   "${RES_DIR}/vu_on.png"
   )
 
-jamba_add_vst3_plugin(
-    TARGET pongasoft_JambaSampleGain
-    RELEASE_FILENAME JambaSampleGain
-    TARGETS_PREFIX jmb_
-    VST_SOURCES ${vst_sources}
-    UIDESC "${RES_DIR}/JSGain.uidesc"
-    RESOURCES ${vst_resources}
+# Location of the test cases
+set(TEST_DIR "${CMAKE_CURRENT_LIST_DIR}/test/cpp")
+
+# List of test cases
+set(test_case_sources
+  "${TEST_DIR}/test-JSGain.cpp"
 )
 
-####################################################
-## Testing
-####################################################
-file(GLOB_RECURSE TEST_SRC_FILES RELATIVE ${PROJECT_SOURCE_DIR} test/cpp/*cpp)
-set(test_sources ${test_sources}
-		${LOGURU_IMPL}
-		${CPP_SOURCES}/JSGainModel.cpp # add whichever cpp you need or ${vst_sources} for all
-  )
-set(test_libs base sdk vstgui_support jamba)
-
-jamba_add_test(pongasoft_JambaSampleGain_test "${TEST_SRC_FILES}" "${test_sources}" "${test_libs}")
+# Finally invoke jamba_add_vst3_plugin
+jamba_add_vst3_plugin(
+    TARGET              "pongasoft_JambaSampleGain"        # name of CMake target for the plugin
+    RELEASE_FILENAME    "JambaSampleGain"                  # filename for the plugin (JambaSampleGain.vst3)
+    TARGETS_PREFIX      "jsg_"                             # prefix used by all targets directly linked to this plugin
+    VST_SOURCES         "${vst_sources}" "${vst2_sources}" # the source files that compose the plugin
+    INCLUDE_DIRECTORIES "${VERSION_DIR}"                   # we add the version folder to the list of includes
+    UIDESC              "${RES_DIR}/JSGain.uidesc"         # the main xml file for the GUI
+    RESOURCES           "${vst_resources}"                 # the resources for the GUI (png files)
+    TEST_CASE_SOURCES   "${test_case_sources}"             # the source files containing the test cases
+    TEST_SOURCES        "${CPP_SOURCES}/JSGainModel.cpp"   # we only need this file but we could add ${vst_sources} if we needed more
+    TEST_LINK_LIBRARIES "jamba"                            # the library needed for linking the tests
+)
