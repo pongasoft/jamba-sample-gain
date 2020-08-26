@@ -8,7 +8,7 @@ option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 2)
-set(PLUGIN_PATCH_VERSION 5)
+set(PLUGIN_PATCH_VERSION 6)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project("jamba-sample-gain")
@@ -83,7 +83,7 @@ set(test_case_sources
 jamba_add_vst_plugin(
     TARGET              "pongasoft_JambaSampleGain"        # name of CMake target for the plugin
     RELEASE_FILENAME    "JambaSampleGain"                  # filename for the plugin (JambaSampleGain.vst3)
-    TARGETS_PREFIX      "jsg_"                             # prefix used by all targets directly linked to this plugin
+    TARGETS_PREFIX      "jmb_"                             # prefix used by all targets directly linked to this plugin
     VST_SOURCES         "${vst_sources}" "${vst2_sources}" # the source files that compose the plugin
     INCLUDE_DIRECTORIES "${VERSION_DIR}"                   # we add the version folder to the list of includes
     UIDESC              "${RES_DIR}/JSGain.uidesc"         # the main xml file for the GUI

@@ -92,78 +92,120 @@ The VST SDK will be automatically downloaded during the configure phase. This pr
 Build this project
 ------------------
 
-The following steps describes (for each platform) how to build the plugin.
+The following steps describes how to build the plugin: 
 
-### macOS
+1. Invoke the `configure.py` python script to configure the project
+2. Run the `jamba.sh` (resp. `jamba.bat`) command line to build, test validate...
+
+### macOS:
 
 - For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
-        ./configure.sh
-        cd build
+        > ./configure.py -h
+        usage: configure.py [-h] [-n] [-f] [-r] [--vst3 VST3_SDK_ROOT] [--vst2 VST2_SDK_ROOT] 
+                            [-G GENERATOR] [-B BUILD_DIR] [-- <cmake_options>]
+        
+        positional arguments:
+          cmake_options         Any options for cmake
+        
+        optional arguments:
+          -h, --help            show this help message and exit
+          -n, --dry-run         Dry run (prints what it is going to do)
+          -f, --force           Force a regeneration (delete and recreate build folder)
+          --vst3 VST3_SDK_ROOT  Path to the VST3 SDK (optional)
+          --vst2 VST2_SDK_ROOT  Path to the VST2 SDK (optional)
+          -r, --release         Use CMake Release build type (for single-config generators)
+          -G GENERATOR, --generator GENERATOR
+                                CMake generator (optional)
+          -B BUILD_DIR, --build-dir BUILD_DIR
+                                Build folder (defaults to ./build)
+        
+        Notes
+          ---vst3 defaults to /Users/Shared/Steinberg/VST_SDK.<JAMBA_VST3SDK_VERSION>
+          ---vst2 defaults to /Users/Shared/Steinberg/VST_SDK.<JAMBA_VST2SDK_VERSION>
+        
+          -G defaults to "Xcode" on macOS and "Visual Studio 16 2019" for Windows10
+          run 'cmake --help' to get the list of generators supported
+        
+          For single-config generators, Debug is used by default and can be changed with -r for Release
+          For multi-config generators, -r is ignored
+        
+          To provide extra options to CMake you do it this way
+          python3 configure.py -- -Wdev
+        
+        Examples
+          # Specify an explicit path to the VST3 sdk and uses default generator
+          python3 configure.py ---vst3 /opt/local/VST_SDK.3.7.0
+        
+          # Use default paths and uses another generator
+          python3 configure.py -G "CodeBlocks - Unix Makefiles"
+        
+          # Use defaults
+        
+        > ./configure.py
+        > cd build
 
 - In order to build, test, validate, etc... simply use the `jamba.sh` script like this:
 
-         ./jamba.sh -h
-         Usage:  jamba.sh [-hdrn] <command>
-
-           -h : usage help
-           -d : use Debug build config (default)
-           -r : use Release build config (Debug if not defined)
-           -n : dry run (prints what it is going to do)
-
-         Commands: 
-           ---- VST Commands ----
-           clean    : clean all builds
-           build    : build the VST plugin
-           edit     : start the GUI editor (Debug only)
-           install  : install the VST plugin in their default location
-           test     : run the unit tests
-           validate : run the VST3 validator
-           ---- Audio Unit Commands ----
-           build-au    : build the Audio Unit wrapper plugin
-           install-au  : install the Audio Unit plugin in its default location
-           validate-au : run the Audio Unit validator
-           ---- Generic Commands ----
-           archive : generate the zip file containing the plugin(s) and README/License
-           prod    : run test/validate/archive (default to Release, override with -d)
-           ---- CMake target ----
-           <target> : invoke cmake with the provided target
+        > ./jamba.sh -h
+        usage: jamba.sh [-hnvbdr] <command> [<command> ...] [-- [native-options]]
+        
+        positional arguments:
+          command        See "Commands" section
+        
+        optional arguments:
+          -h, --help     show this help message and exit
+          -n, --dry-run  Dry run (prints what it is going to do)
+          -v, --verbose  Verbose build
+          -b, --banner   Display a banner before every command
+          -d, --debug    use Debug build config
+          -r, --release  use Release build config
+        
+        Commands
+          ---- Main commands ----
+          clean     : clean all builds
+          build     : build the plugin
+          test      : run the tests for the plugin
+          validate  : run the validator for the vst3 plugin
+          edit      : run the editor (full editing available in Debug config only)
+          install   : build and install all the plugins (vst2/vst3/audio unit)
+          uninstall : delete the installed plugins (vst2/vst3/audio unit)
+          archive   : create an archive containing the plugins
+        
+          ---- VST3 commands ----
+          install-vst3   : install the vst3 plugin only
+          uninstall-vst3 : uninstall the vst3 plugin only
+        
+          ---- VST2 commands ----
+          install-vst2   : install the vst2 plugin only
+          uninstall-vst2 : uninstall the vst2 plugin only
+        
+          ---- Audio Unit commands ----
+          build-au     : builds the Audio Unit wrapper
+          install-au   : install the vst2 plugin only
+          uninstall-au : uninstall the vst2 plugin only
+        
+          ---- CMake target ----
+          <command>   : Any unknown <command> is treated as a cmake target
+        
+          --- Native options ----
+          Pass remaining options to the native tool (ex: -- -j 8 for parallel build)
 
 Note: You can load the project directly in CLion (since CLion does not support the Xcode cmake generator, you can still work on the plugin but in order to build and install the Audio Unit wrapper you will need to use the command line).
 
 ### Windows
 
-- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere. Note that PowerShell is highly recommended.
+For windows, follow the same steps for macOS with the following changes:
 
-        .\configure.bat
-        cd build
-
-- In order to build, test, validate, etc... simply use the `jamba.bat` script like this:
-
-         .\jamba.bat -h
-         Usage:  jamba.bat [-hdrn] <command>
-
-           -h : usage help
-           -d : use Debug build config (default)
-           -r : use Release build config (Debug if not defined)
-           -n : dry run (prints what it is going to do)
-
-         Commands: 
-           ---- VST Commands ----
-           clean    : clean all builds
-           build    : build the VST plugin
-           edit     : start the GUI editor (Debug only)
-           install  : install the VST plugin in their default location
-           test     : run the unit tests
-           validate : run the VST3 validator
-           ---- Generic Commands ----
-           archive : generate the zip file containing the plugin(s) and README/License
-           prod    : run test/validate/archive (default to Release, override with -d)
-           ---- CMake target ----
-           <target> : invoke cmake with the provided target
+* In order to invoke `configure.py` you need to use `python configure.py`
+* The script is called `jamba.bat` (instead of `jamba.sh`)
 
 Release Notes
 -------------
+
+### 2020-08-26 - `v1.2.6`
+* use latest version of Jamba (v5.0.0)
+* use `configure.py` instead of shell scripts
 
 ### 2020-04-26 - `v1.2.5`
 * use latest version of Jamba (v4.4.0)
