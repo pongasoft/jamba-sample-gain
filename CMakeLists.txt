@@ -79,8 +79,8 @@ set(test_case_sources
   "${TEST_DIR}/test-JSGain.cpp"
 )
 
-# Finally invoke jamba_add_vst3_plugin
-jamba_add_vst3_plugin(
+# Finally invoke jamba_add_vst_plugin
+jamba_add_vst_plugin(
     TARGET              "pongasoft_JambaSampleGain"        # name of CMake target for the plugin
     RELEASE_FILENAME    "JambaSampleGain"                  # filename for the plugin (JambaSampleGain.vst3)
     TARGETS_PREFIX      "jsg_"                             # prefix used by all targets directly linked to this plugin
