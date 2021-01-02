@@ -6,21 +6,32 @@ option(JAMBA_ENABLE_VST2 "Use VST2" ON)
 # build Audio Unit?
 option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
+# Sets the deployment target for macOS
+set(JAMBA_MACOS_DEPLOYMENT_TARGET "10.14" CACHE STRING "macOS deployment target")
+
+# To use local jamba install, uncomment the following line (no download)
+set(JAMBA_ROOT_DIR "")
+#set(JAMBA_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pongasoft/jamba")
+
+# download jamba framework
+include(fetch_jamba.cmake)
+
+# Determine proper architecture for the project
+include("${JAMBA_ROOT_DIR}/cmake/JambaSetArchitecture.cmake")
+
 set(PLUGIN_MAJOR_VERSION 1)
 set(PLUGIN_MINOR_VERSION 2)
-set(PLUGIN_PATCH_VERSION 6)
+set(PLUGIN_PATCH_VERSION 7)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project("jamba-sample-gain")
 
-# To disable download/update, you can set those 2 variables to local folders
-set(JAMBA_ROOT_DIR "")
-#set(JAMBA_ROOT_DIR ../../pongasoft/jamba)
+# To use local googletest install, uncomment the following line (no download) and modify the path accordingly
 set(GOOGLETEST_ROOT_DIR "")
-#set(GOOGLETEST_ROOT_DIR ../../google/googletest)
+#set(GOOGLETEST_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../google/googletest")
 
-# download jamba framework
-include(jamba.cmake)
+# Include Jamba
+include("${JAMBA_ROOT_DIR}/jamba.cmake")
 
 # Location of the source files
 set(CPP_SOURCES src/cpp)
@@ -28,7 +39,7 @@ set(CPP_SOURCES src/cpp)
 # Generating the version.h header file which contains the plugin version (to make sure it is in sync with the version
 # defined here)
 set(VERSION_DIR "${CMAKE_BINARY_DIR}/generated")
-configure_file(${CPP_SOURCES}/version.h.in "${VERSION_DIR}/version.h")
+configure_file("${CPP_SOURCES}/version.h.in" "${VERSION_DIR}/version.h")
 
 # Source files for VST2
 if (JAMBA_ENABLE_VST2)
@@ -83,6 +94,7 @@ set(test_case_sources
 jamba_add_vst_plugin(
     TARGET              "pongasoft_JambaSampleGain"        # name of CMake target for the plugin
     RELEASE_FILENAME    "JambaSampleGain"                  # filename for the plugin (JambaSampleGain.vst3)
+    ARCHIVE_ARCHITECTURE "${JAMBA_ARCHIVE_ARCHITECTURE}"   # handle proper archive name based on architecture
     TARGETS_PREFIX      "jmb_"                             # prefix used by all targets directly linked to this plugin
     VST_SOURCES         "${vst_sources}" "${vst2_sources}" # the source files that compose the plugin
     INCLUDE_DIRECTORIES "${VERSION_DIR}"                   # we add the version folder to the list of includes

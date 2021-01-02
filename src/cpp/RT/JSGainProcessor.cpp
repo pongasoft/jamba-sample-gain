@@ -22,7 +22,11 @@ JSGainProcessor::JSGainProcessor() : RTProcessor(JSGainControllerUID),
                                      fParameters{},
                                      fState{fParameters}
 {
-  DLOG_F(INFO, "JSGainProcessor() - jamba: %s - plugin: v%s", JAMBA_GIT_VERSION_STR, FULL_VERSION_STR);
+  DLOG_F(INFO, "[%s] JambaSampleGainProcessor() - jamba: %s - plugin: v%s (%s)",
+         stringPluginName,
+         JAMBA_GIT_VERSION_STR,
+         FULL_VERSION_STR,
+         BUILD_ARCHIVE_ARCHITECTURE);
 
   // in Debug mode we display the parameters in a table
 #ifndef NDEBUG
