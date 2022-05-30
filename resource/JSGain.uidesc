@@ -1,57 +1,632 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<vstgui-ui-description version="1">
-	<fonts>
-	</fonts>
-	<colors>
-	</colors>
-	<template background-color="~ BlackCColor" background-color-draw-style="filled and stroked" bitmap="background" class="CViewContainer" mouse-enabled="true" name="view" opacity="1" origin="0, 0" size="400, 150" transparent="false" wants-focus="false">
-		<view background-offset="0, 0" bitmap="vu_on" class="CVuMeter" control-tag="Param_VuPPM" decrease-step-value="0.1" default-value="0" max-value="1" min-value="0" mouse-enabled="true" num-led="100" off-bitmap="vu_off" opacity="1" orientation="vertical" origin="370, 7" size="12, 105" transparent="false" wants-focus="false" wheel-inc-value="0.1"/>
-		<view back-color="#c8c8c8ff" class="jamba::ToggleButton" control-tag="Param_Bypass" editor-mode="false" frames="4" inverse="false" mouse-enabled="true" off-step="-1" on-color="~ RedCColor" on-step="-1" opacity="1" origin="70, 20" size="20, 20" step-count="-1" transparent="false" wants-focus="true"/>
-		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="20, 120" round-rect-radius="6" shadow-color="~ BlackCColor" size="40, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="right" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Send" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="slider_background" bitmap-offset="0, 0" class="JSGain::LinkedSlider" control-tag="Param_LeftGain" default-value="0.7" draw-back="false" draw-back-color="~ BlackCColor" draw-frame="false" draw-frame-color="~ GreyCColor" draw-value="false" draw-value-color="~ WhiteCColor" draw-value-from-center="false" draw-value-inverted="false" frame-width="1" handle-bitmap="slider_handle" handle-offset="0, 2" max-value="1" min-value="0" mode="touch" mouse-enabled="true" opacity="1" orientation="horizontal" origin="70, 60" reverse-orientation="false" size="130, 18" transparent="false" transparent-handle="true" wants-focus="true" wheel-inc-value="0.1" zoom-factor="10"/>
-		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="10, 60" round-rect-radius="6" shadow-color="~ BlackCColor" size="50, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="right" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Gain L" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view back-color="~ BlackCColor" background-offset="0, 0" class="CTextLabel" control-tag="Param_LeftGain" default-value="0.7" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="220, 60" round-rect-radius="6" shadow-color="~ TransparentCColor" size="60, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="+0.00dB" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" bitmap="slider_background" bitmap-offset="0, 0" class="JSGain::LinkedSlider" control-tag="Param_RightGain" default-value="0.7" draw-back="false" draw-back-color="~ BlackCColor" draw-frame="false" draw-frame-color="~ GreyCColor" draw-value="false" draw-value-color="~ WhiteCColor" draw-value-from-center="false" draw-value-inverted="false" frame-width="1" handle-bitmap="slider_handle" handle-offset="0, 2" max-value="1" min-value="0" mode="touch" mouse-enabled="true" opacity="1" orientation="horizontal" origin="70, 90" reverse-orientation="false" size="130, 18" transparent="false" transparent-handle="true" wants-focus="true" wheel-inc-value="0.1" zoom-factor="10"/>
-		<view back-color="~ BlackCColor" background-offset="0, 0" class="CTextLabel" control-tag="Param_RightGain" default-value="0.7" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="220, 90" round-rect-radius="6" shadow-color="~ TransparentCColor" size="60, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="+0.00dB" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="10, 90" round-rect-radius="6" shadow-color="~ BlackCColor" size="50, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="right" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Gain R" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="280, 95" round-rect-radius="6" shadow-color="~ BlackCColor" size="40, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Link" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view back-color="#c8c8c8ff" class="jamba::ToggleButton" control-tag="Param_Link" editor-mode="false" frames="4" inverse="false" mouse-enabled="true" off-step="-1" on-color="~ YellowCColor" on-step="-1" opacity="1" origin="290, 75" size="20, 20" step-count="-1" transparent="false" wants-focus="true"/>
-		<view back-color="~ BlackCColor" class="JSGain::Stats" editor-mode="false" font="~ NormalFontVerySmall" mouse-enabled="true" opacity="1" origin="120, 20" size="190, 20" text-color="~ WhiteCColor" transparent="false" wants-focus="true"/>
-		<view back-color="#c8c8c8ff" button-image-has-disabled-state="false" class="jamba::MomentaryButton" control-tag="Param_ResetMax" disabled-color="~ BlackCColor" editor-mode="false" inverse="false" mouse-enabled="true" off-step="-1" on-color="~ GreyCColor" on-step="-1" opacity="1" origin="320, 20" size="20, 20" step-count="-1" transparent="false" wants-focus="true"/>
-		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="310, 40" round-rect-radius="6" shadow-color="~ BlackCColor" size="40, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Reset" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-		<view back-color="~ BlackCColor" background-offset="0, 0" class="jamba::TextEdit" control-tag="Param_InputText" default-value="0.5" editor-mode="false" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ BlackCColor" frame-width="1" immediate-text-change="false" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="70, 120" round-rect-radius="6" secure-style="false" shadow-color="~ RedCColor" size="130, 20" style-3D-in="false" style-3D-out="false" style-doubleclick="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="false" text-alignment="center" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Hello from GUI" transparent="false" value-precision="2" wants-focus="true" wheel-inc-value="0.1"/>
-		<view background-offset="0, 0" button-image-has-disabled-state="false" class="JSGain::SendMessage" default-value="0.5" disabled-text-color="~ WhiteCColor" editor-mode="false" font="~ SystemFont" frame-color="~ BlackCColor" frame-color-highlighted="~ BlackCColor" frame-width="1" icon-position="left" icon-text-margin="0" kick-style="true" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="220, 120" precision-override="-1" round-radius="6" size="20, 20" text-alignment="center" text-color="~ BlackCColor" text-color-highlighted="~ WhiteCColor" transparent="false" wants-focus="true" wheel-inc-value="0.1"/>
-		<view back-color="~ TransparentCColor" background-offset="0, 0" class="CTextLabel" default-value="0.5" font="~ NormalFont" font-antialias="true" font-color="~ WhiteCColor" frame-color="~ TransparentCColor" frame-width="1" max-value="1" min-value="0" mouse-enabled="true" opacity="1" origin="10, 20" round-rect-radius="6" shadow-color="~ BlackCColor" size="50, 20" style-3D-in="false" style-3D-out="false" style-no-draw="false" style-no-frame="false" style-no-text="false" style-round-rect="false" style-shadow-text="true" text-alignment="right" text-inset="0, 0" text-rotation="0" text-shadow-offset="1, 1" title="Bypass" transparent="false" value-precision="2" wants-focus="false" wheel-inc-value="0.1"/>
-	</template>
-	<custom>
-		<attributes name="FocusDrawing"/>
-		<attributes Path="/Volumes/Development/github/org.pongasoft/jamba-sample-gain/resource/JSGain.uidesc" name="VST3Editor"/>
-		<attributes Size="10, 10" name="UIGridController"/>
-		<attributes SelectedTemplate="view" name="UITemplateController"/>
-		<attributes EditViewScale="1" EditorSize="0, 0, 1252, 778" SplitViewSize_0_0="0.8282694848084544148036911792587488889694" SplitViewSize_0_1="0.1453104359313077964532823216359247453511" SplitViewSize_1_0="0.513870541611624820355075371480779722333" SplitViewSize_1_1="0.4795244385733157255202740998356603085995" SplitViewSize_2_0="0.6948881789137379971776908860192634165287" SplitViewSize_2_1="0.3011182108626198061784862147760577499866" TabSwitchValue="0" Version="1" name="UIEditController"/>
-		<attributes name="UIAttributesController"/>
-		<attributes SelectedRow="7" name="UIViewCreatorDataSource"/>
-		<attributes SelectedRow="1" name="UIBitmapsDataSource"/>
-		<attributes SelectedRow="1" name="UITagsDataSource"/>
-	</custom>
-	<bitmaps>
-		<bitmap name="background" path="background.png"/>
-		<bitmap name="slider_background" path="slider_background.png"/>
-		<bitmap name="slider_handle" path="slider_handle.png"/>
-		<bitmap name="slider_handle_2.0x" path="slider_handle_2.0x.png" scale-factor="2"/>
-		<bitmap name="vu_off" path="vu_off.png"/>
-		<bitmap name="vu_on" path="vu_on.png"/>
-	</bitmaps>
-	<control-tags>
-		<control-tag name="Param_Bypass" tag="1000"/>
-		<control-tag name="Param_InputText" tag="2030"/>
-		<control-tag name="Param_LeftGain" tag="2010"/>
-		<control-tag name="Param_Link" tag="2012"/>
-		<control-tag name="Param_ResetMax" tag="2020"/>
-		<control-tag name="Param_RightGain" tag="2011"/>
-		<control-tag name="Param_Stats" tag="3000"/>
-		<control-tag name="Param_UIMessage" tag="3010"/>
-		<control-tag name="Param_VuPPM" tag="2000"/>
-	</control-tags>
-	<gradients/>
-</vstgui-ui-description>
+{
+	"vstgui-ui-description": {
+		"version": "1",
+		"bitmaps": {
+			"background": {
+				"path": "background.png"
+			},
+			"slider_background": {
+				"path": "slider_background.png"
+			},
+			"slider_handle": {
+				"path": "slider_handle.png"
+			},
+			"slider_handle_2.0x": {
+				"path": "slider_handle_2.0x.png",
+				"scale-factor": "2"
+			},
+			"vu_off": {
+				"path": "vu_off.png"
+			},
+			"vu_on": {
+				"path": "vu_on.png"
+			}
+		},
+		"fonts": {},
+		"colors": {},
+		"gradients": {},
+		"control-tags": {
+			"Param_Bypass": "1000",
+			"Param_InputText": "2030",
+			"Param_LeftGain": "2010",
+			"Param_Link": "2012",
+			"Param_ResetMax": "2020",
+			"Param_RightGain": "2011",
+			"Param_Stats": "3000",
+			"Param_UIMessage": "3010",
+			"Param_VuPPM": "2000"
+		},
+		"custom": {
+			"FocusDrawing": {},
+			"VST3Editor": {
+				"Path": "/Volumes/Development/github/org.pongasoft/jamba-sample-gain/resource/JSGain.uidesc"
+			},
+			"UIGridController": {
+				"Grids": "1x 1,5x 5,10x 10,12x 12,15x 15",
+				"Size": "10, 10"
+			},
+			"UITemplateController": {
+				"SelectedTemplate": "view"
+			},
+			"UIEditController": {
+				"EditViewScale": "1",
+				"EditorSize": "0, 0, 1252, 778",
+				"SplitViewSize_0_0": "0.8284574468085106335735190441482700407505",
+				"SplitViewSize_0_1": "0.1449468085106382919668988051853375509381",
+				"SplitViewSize_1_0": "0.5132978723404255649853666909621097147465",
+				"SplitViewSize_1_1": "0.4800531914893617080331011948146624490619",
+				"SplitViewSize_2_0": "0.6948881789137379971776908860192634165287",
+				"SplitViewSize_2_1": "0.3011182108626198061784862147760577499866",
+				"TabSwitchValue": "0",
+				"Version": "1"
+			},
+			"UIAttributesController": {},
+			"UIViewCreatorDataSource": {
+				"SelectedRow": "7"
+			},
+			"UIBitmapsDataSource": {
+				"SelectedRow": "1"
+			},
+			"UITagsDataSource": {
+				"SelectedRow": "1"
+			}
+		},
+		"templates": {
+			"view": {
+				"attributes": {
+					"background-color": "~ BlackCColor",
+					"background-color-draw-style": "filled and stroked",
+					"bitmap": "background",
+					"class": "CViewContainer",
+					"mouse-enabled": "true",
+					"opacity": "1",
+					"origin": "0, 0",
+					"size": "400, 150",
+					"transparent": "false",
+					"wants-focus": "false"
+				},
+				"children": {
+					"CVuMeter": {
+						"attributes": {
+							"background-offset": "0, 0",
+							"bitmap": "vu_on",
+							"class": "CVuMeter",
+							"control-tag": "Param_VuPPM",
+							"decrease-step-value": "0.1",
+							"default-value": "0",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"num-led": "100",
+							"off-bitmap": "vu_off",
+							"opacity": "1",
+							"orientation": "vertical",
+							"origin": "370, 7",
+							"size": "12, 105",
+							"transparent": "false",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"jamba::ToggleButton": {
+						"attributes": {
+							"back-color": "#c8c8c8ff",
+							"class": "jamba::ToggleButton",
+							"control-tag": "Param_Bypass",
+							"editor-mode": "false",
+							"frames": "4",
+							"inverse": "false",
+							"mouse-enabled": "true",
+							"off-step": "-1",
+							"on-color": "~ RedCColor",
+							"on-step": "-1",
+							"opacity": "1",
+							"origin": "70, 20",
+							"size": "20, 20",
+							"step-count": "-1",
+							"transparent": "false",
+							"wants-focus": "true"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ TransparentCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "20, 120",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "40, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "right",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Send",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"JSGain::LinkedSlider": {
+						"attributes": {
+							"background-offset": "0, 0",
+							"bitmap": "slider_background",
+							"bitmap-offset": "0, 0",
+							"class": "JSGain::LinkedSlider",
+							"control-tag": "Param_LeftGain",
+							"default-value": "0.7",
+							"draw-back": "false",
+							"draw-back-color": "~ BlackCColor",
+							"draw-frame": "false",
+							"draw-frame-color": "~ GreyCColor",
+							"draw-value": "false",
+							"draw-value-color": "~ WhiteCColor",
+							"draw-value-from-center": "false",
+							"draw-value-inverted": "false",
+							"frame-width": "1",
+							"handle-bitmap": "slider_handle",
+							"handle-offset": "0, 2",
+							"max-value": "1",
+							"min-value": "0",
+							"mode": "touch",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"orientation": "horizontal",
+							"origin": "70, 60",
+							"reverse-orientation": "false",
+							"size": "130, 18",
+							"transparent": "false",
+							"transparent-handle": "true",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1",
+							"zoom-factor": "10"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ TransparentCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "10, 60",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "50, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "right",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Gain L",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ BlackCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"control-tag": "Param_LeftGain",
+							"default-value": "0.7",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "220, 60",
+							"round-rect-radius": "6",
+							"shadow-color": "~ TransparentCColor",
+							"size": "60, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "false",
+							"text-alignment": "center",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "+0.00dB",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"JSGain::LinkedSlider": {
+						"attributes": {
+							"background-offset": "0, 0",
+							"bitmap": "slider_background",
+							"bitmap-offset": "0, 0",
+							"class": "JSGain::LinkedSlider",
+							"control-tag": "Param_RightGain",
+							"default-value": "0.7",
+							"draw-back": "false",
+							"draw-back-color": "~ BlackCColor",
+							"draw-frame": "false",
+							"draw-frame-color": "~ GreyCColor",
+							"draw-value": "false",
+							"draw-value-color": "~ WhiteCColor",
+							"draw-value-from-center": "false",
+							"draw-value-inverted": "false",
+							"frame-width": "1",
+							"handle-bitmap": "slider_handle",
+							"handle-offset": "0, 2",
+							"max-value": "1",
+							"min-value": "0",
+							"mode": "touch",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"orientation": "horizontal",
+							"origin": "70, 90",
+							"reverse-orientation": "false",
+							"size": "130, 18",
+							"transparent": "false",
+							"transparent-handle": "true",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1",
+							"zoom-factor": "10"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ BlackCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"control-tag": "Param_RightGain",
+							"default-value": "0.7",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "220, 90",
+							"round-rect-radius": "6",
+							"shadow-color": "~ TransparentCColor",
+							"size": "60, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "false",
+							"text-alignment": "center",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "+0.00dB",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ TransparentCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "10, 90",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "50, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "right",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Gain R",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ TransparentCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "280, 95",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "40, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "center",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Link",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"jamba::ToggleButton": {
+						"attributes": {
+							"back-color": "#c8c8c8ff",
+							"class": "jamba::ToggleButton",
+							"control-tag": "Param_Link",
+							"editor-mode": "false",
+							"frames": "4",
+							"inverse": "false",
+							"mouse-enabled": "true",
+							"off-step": "-1",
+							"on-color": "~ YellowCColor",
+							"on-step": "-1",
+							"opacity": "1",
+							"origin": "290, 75",
+							"size": "20, 20",
+							"step-count": "-1",
+							"transparent": "false",
+							"wants-focus": "true"
+						}
+					},
+					"JSGain::Stats": {
+						"attributes": {
+							"back-color": "~ BlackCColor",
+							"class": "JSGain::Stats",
+							"editor-mode": "false",
+							"font": "~ NormalFontVerySmall",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "120, 20",
+							"size": "190, 20",
+							"text-color": "~ WhiteCColor",
+							"transparent": "false",
+							"wants-focus": "true"
+						}
+					},
+					"jamba::MomentaryButton": {
+						"attributes": {
+							"back-color": "#c8c8c8ff",
+							"button-image-has-disabled-state": "false",
+							"class": "jamba::MomentaryButton",
+							"control-tag": "Param_ResetMax",
+							"disabled-color": "~ BlackCColor",
+							"editor-mode": "false",
+							"inverse": "false",
+							"mouse-enabled": "true",
+							"off-step": "-1",
+							"on-color": "~ GreyCColor",
+							"on-step": "-1",
+							"opacity": "1",
+							"origin": "320, 20",
+							"size": "20, 20",
+							"step-count": "-1",
+							"transparent": "false",
+							"wants-focus": "true"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ TransparentCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "310, 40",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "40, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "center",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Reset",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"jamba::TextEdit": {
+						"attributes": {
+							"back-color": "~ BlackCColor",
+							"background-offset": "0, 0",
+							"class": "jamba::TextEdit",
+							"control-tag": "Param_InputText",
+							"default-value": "0.5",
+							"editor-mode": "false",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ BlackCColor",
+							"frame-width": "1",
+							"immediate-text-change": "false",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "70, 120",
+							"round-rect-radius": "6",
+							"secure-style": "false",
+							"shadow-color": "~ RedCColor",
+							"size": "130, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-doubleclick": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "false",
+							"text-alignment": "center",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Hello from GUI",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"JSGain::SendMessage": {
+						"attributes": {
+							"background-offset": "0, 0",
+							"button-image-has-disabled-state": "false",
+							"class": "JSGain::SendMessage",
+							"default-value": "0.5",
+							"disabled-text-color": "~ WhiteCColor",
+							"editor-mode": "false",
+							"font": "~ SystemFont",
+							"frame-color": "~ BlackCColor",
+							"frame-color-highlighted": "~ BlackCColor",
+							"frame-width": "1",
+							"icon-position": "left",
+							"icon-text-margin": "0",
+							"kick-style": "true",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "220, 120",
+							"precision-override": "-1",
+							"round-radius": "6",
+							"size": "20, 20",
+							"text-alignment": "center",
+							"text-color": "~ BlackCColor",
+							"text-color-highlighted": "~ WhiteCColor",
+							"transparent": "false",
+							"wants-focus": "true",
+							"wheel-inc-value": "0.1"
+						}
+					},
+					"CTextLabel": {
+						"attributes": {
+							"back-color": "~ TransparentCColor",
+							"background-offset": "0, 0",
+							"class": "CTextLabel",
+							"default-value": "0.5",
+							"font": "~ NormalFont",
+							"font-antialias": "true",
+							"font-color": "~ WhiteCColor",
+							"frame-color": "~ TransparentCColor",
+							"frame-width": "1",
+							"max-value": "1",
+							"min-value": "0",
+							"mouse-enabled": "true",
+							"opacity": "1",
+							"origin": "10, 20",
+							"round-rect-radius": "6",
+							"shadow-color": "~ BlackCColor",
+							"size": "50, 20",
+							"style-3D-in": "false",
+							"style-3D-out": "false",
+							"style-no-draw": "false",
+							"style-no-frame": "false",
+							"style-no-text": "false",
+							"style-round-rect": "false",
+							"style-shadow-text": "true",
+							"text-alignment": "right",
+							"text-inset": "0, 0",
+							"text-rotation": "0",
+							"text-shadow-offset": "1, 1",
+							"title": "Bypass",
+							"transparent": "false",
+							"value-precision": "2",
+							"wants-focus": "false",
+							"wheel-inc-value": "0.1"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -203,6 +203,9 @@ For windows, follow the same steps for macOS with the following changes:
 Release Notes
 -------------
 
+### 2022-05-30 - `v1.2.8`
+* use latest version of Jamba (v6.0.0)
+
 ### 2021-01-02 - `v1.2.7`
 * use latest version of Jamba (v5.1.2)
 * added support for Apple Silicon

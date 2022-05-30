@@ -16,24 +16,6 @@
 using namespace pongasoft::VST;
 
 //------------------------------------------------------------------------
-//  Module init/exit
-//------------------------------------------------------------------------
-
-//------------------------------------------------------------------------
-// called after library was loaded
-bool InitModule()
-{
-  return true;
-}
-
-//------------------------------------------------------------------------
-// called after library is unloaded
-bool DeinitModule()
-{
-  return true;
-}
-
-//------------------------------------------------------------------------
 // VST3 Plugin Main entry point
 // This is equivalent to the 'main()' method for an executable in the
 // case of a VST3 plugin. The implementation simply delegates to
