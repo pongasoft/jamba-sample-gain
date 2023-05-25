@@ -10,7 +10,7 @@
 namespace pongasoft::VST::JSGain {
 
 //------------------------------------------------------------------------
-// These 2 IDs are used in JSGainVST2.cpp and JSGainVST3.cpp to create
+// These 2 IDs are used in JSGainVST3.cpp to create
 // the processor (RT) and controller (GUI). Note that those IDs must be
 // unique. You can use an online generator like https://www.guidgenerator.com
 // to generate them. Those were generated with java UUID.randomUUID().

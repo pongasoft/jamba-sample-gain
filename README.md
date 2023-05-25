@@ -12,7 +12,7 @@ This is what the plugin looks like:
 
 Concepts
 --------
-Jamba is a set of helpers (classes, concepts, build files, etc...) built on top of the VST SDK to provide a lightweight framework to build a VST2/3 plugin.
+Jamba is a set of helpers (classes, concepts, build files, etc...) built on top of the VST SDK to provide a lightweight framework to build a VST3 plugin.
 
 ### Parameters
 VST parameters are what the host DAW deal with (for example a knob is usually tied to a VST parameter). Both the GUI and the RT (Real Time) are "sharing" those parameters. As a result Jamba makes them front and center: you define them in one place and use them in the GUI and RT. Check the file [JSGainPlugin.h](src/cpp/JSGainPlugin.h)
@@ -99,61 +99,58 @@ The following steps describes how to build the plugin:
 
 ### macOS:
 
-- For simplicity I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
+- For simplicity, I am creating the build at the root of the source tree, but can obviously be *outside* the source tree entirely by running the script from anywhere
 
         > ./configure.py -h
-        usage: configure.py [-h] [-n] [-f] [-r] [--vst3 VST3_SDK_ROOT] [--vst2 VST2_SDK_ROOT] 
-                            [-G GENERATOR] [-B BUILD_DIR] [-- <cmake_options>]
+        usage: configure.py [-h] [-n] [-f] [-r] [--vst3 VST3_SDK_ROOT] [-G GENERATOR] [-B BUILD_DIR] [-- <cmake_options>]
         
         positional arguments:
-          cmake_options         Any options for cmake
+        cmake_options         Any options for cmake
         
         optional arguments:
-          -h, --help            show this help message and exit
-          -n, --dry-run         Dry run (prints what it is going to do)
-          -f, --force           Force a regeneration (delete and recreate build folder)
-          --vst3 VST3_SDK_ROOT  Path to the VST3 SDK (optional)
-          --vst2 VST2_SDK_ROOT  Path to the VST2 SDK (optional)
-          -r, --release         Use CMake Release build type (for single-config generators)
-          -G GENERATOR, --generator GENERATOR
-                                CMake generator (optional)
-          -B BUILD_DIR, --build-dir BUILD_DIR
-                                Build folder (defaults to ./build)
+        -h, --help            show this help message and exit
+        -n, --dry-run         Dry run (prints what it is going to do)
+        -f, --force           Force a regeneration (delete and recreate build
+        folder)
+        --vst3 VST3_SDK_ROOT  Path to the VST3 SDK (optional)
+        -r, --release         Use CMake Release build type (for single-config
+        generators)
+        -G GENERATOR, --generator GENERATOR
+        CMake generator (optional)
+        -B BUILD_DIR, --build-dir BUILD_DIR
+        Build folder (defaults to ./build)
         
         Notes
-          ---vst3 defaults to /Users/Shared/Steinberg/VST_SDK.<JAMBA_VST3SDK_VERSION>
-          ---vst2 defaults to /Users/Shared/Steinberg/VST_SDK.<JAMBA_VST2SDK_VERSION>
+        ---vst3 defaults to /Users/Shared/Steinberg/VST_SDK.<JAMBA_VST3SDK_VERSION>
         
-          -G defaults to "Xcode" on macOS and "Visual Studio 16 2019" for Windows10
-          run 'cmake --help' to get the list of generators supported
+        -G defaults to "Xcode" on macOS and "Visual Studio 16 2019" for Windows10
+        run 'cmake --help' to get the list of generators supported
         
-          For single-config generators, Debug is used by default and can be changed with -r for Release
-          For multi-config generators, -r is ignored
+        For single-config generators, Debug is used by default and can be changed with -r for Release
+        For multi-config generators, -r is ignored
         
-          To provide extra options to CMake you do it this way
-          python3 configure.py -- -Wdev
+        To provide extra options to CMake you do it this way
+        python3 configure.py -- -Wdev
         
         Examples
-          # Specify an explicit path to the VST3 sdk and uses default generator
-          python3 configure.py ---vst3 /opt/local/VST_SDK.3.7.0
+        # Specify an explicit path to the VST3 sdk and uses default generator
+        python3 configure.py ---vst3 /opt/local/VST_SDK.3.7.0
         
-          # Use default paths and uses another generator
-          python3 configure.py -G "CodeBlocks - Unix Makefiles"
+        # Use default paths and uses another generator
+        python3 configure.py -G "CodeBlocks - Unix Makefiles"
         
-          # Use defaults
-        
-        > ./configure.py
-        > cd build
+        # Use defaults
+        python3 configure.py
 
-- In order to build, test, validate, etc... simply use the `jamba.sh` script like this:
+  - In order to build, test, validate, etc... simply use the `jamba.sh` script like this:
 
-        > ./jamba.sh -h
-        usage: jamba.sh [-hnvbdr] <command> [<command> ...] [-- [native-options]]
+        >   ./jamba.sh -h
+          usage: jamba.sh [-hnvbdr] <command> [<command> ...] [-- [native-options]]
         
-        positional arguments:
+          positional arguments:
           command        See "Commands" section
         
-        optional arguments:
+          optional arguments:
           -h, --help     show this help message and exit
           -n, --dry-run  Dry run (prints what it is going to do)
           -v, --verbose  Verbose build
@@ -161,29 +158,27 @@ The following steps describes how to build the plugin:
           -d, --debug    use Debug build config
           -r, --release  use Release build config
         
-        Commands
+          Commands [Debug]
           ---- Main commands ----
           clean     : clean all builds
           build     : build the plugin
           test      : run the tests for the plugin
           validate  : run the validator for the vst3 plugin
           edit      : run the editor (full editing available in Debug config only)
-          install   : build and install all the plugins (vst2/vst3/audio unit)
-          uninstall : delete the installed plugins (vst2/vst3/audio unit)
+          info      : run the module info tool (display json info about the plugin)
+          inspect   : run the inspector (inspects ALL installed plugins)
+          install   : build and install all the plugins (vst3/audio unit)
+          uninstall : delete the installed plugins (vst3/audio unit)
           archive   : create an archive containing the plugins
         
           ---- VST3 commands ----
           install-vst3   : install the vst3 plugin only
           uninstall-vst3 : uninstall the vst3 plugin only
         
-          ---- VST2 commands ----
-          install-vst2   : install the vst2 plugin only
-          uninstall-vst2 : uninstall the vst2 plugin only
-        
           ---- Audio Unit commands ----
-          build-au     : builds the Audio Unit wrapper
-          install-au   : install the vst2 plugin only
-          uninstall-au : uninstall the vst2 plugin only
+          build-au     : builds the Audio Unit only
+          install-au   : install the Audio Unit only
+          uninstall-au : uninstall the Audio Unit only
         
           ---- CMake target ----
           <command>   : Any unknown <command> is treated as a cmake target
@@ -202,6 +197,9 @@ For windows, follow the same steps for macOS with the following changes:
 
 Release Notes
 -------------
+
+### 2023-05-25 - `v2.0.0`
+* use latest version of Jamba (v7.0.0) / removed support for VST2
 
 ### 2022-06-02 - `v1.2.9`
 * use latest version of Jamba (v6.0.1) to fix gtest crash on Apple M1

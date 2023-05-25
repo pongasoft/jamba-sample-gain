@@ -1,8 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
 
-# build VST 2?
-option(JAMBA_ENABLE_VST2 "Use VST2" ON)
-
 # build Audio Unit?
 option(JAMBA_ENABLE_AUDIO_UNIT "Enable Audio Unit" ON)
 
@@ -11,7 +8,7 @@ set(JAMBA_MACOS_DEPLOYMENT_TARGET "10.14" CACHE STRING "macOS deployment target"
 
 # To use local jamba install, uncomment the following line (no download)
 set(JAMBA_ROOT_DIR "")
-#set(JAMBA_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pongasoft/jamba")
+set(JAMBA_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pongasoft/jamba")
 
 # download jamba framework
 include(fetch_jamba.cmake)
@@ -19,9 +16,9 @@ include(fetch_jamba.cmake)
 # Determine proper architecture for the project
 include("${JAMBA_ROOT_DIR}/cmake/JambaSetArchitecture.cmake")
 
-set(PLUGIN_MAJOR_VERSION 1)
-set(PLUGIN_MINOR_VERSION 2)
-set(PLUGIN_PATCH_VERSION 9)
+set(PLUGIN_MAJOR_VERSION 2)
+set(PLUGIN_MINOR_VERSION 0)
+set(PLUGIN_PATCH_VERSION 0)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project("jamba-sample-gain" VERSION "${PLUGIN_VERSION}")
@@ -40,13 +37,6 @@ set(CPP_SOURCES src/cpp)
 # defined here)
 set(VERSION_DIR "${CMAKE_BINARY_DIR}/generated")
 configure_file("${CPP_SOURCES}/version.h.in" "${VERSION_DIR}/version.h")
-
-# Source files for VST2
-if (JAMBA_ENABLE_VST2)
-  set(vst2_sources
-      ${CPP_SOURCES}/JSGainVST2.cpp
-      )
-endif ()
 
 # Source files for VST3
 set(vst_sources
@@ -96,7 +86,7 @@ jamba_add_vst_plugin(
     RELEASE_FILENAME    "JambaSampleGain"                  # filename for the plugin (JambaSampleGain.vst3)
     ARCHIVE_ARCHITECTURE "${JAMBA_ARCHIVE_ARCHITECTURE}"   # handle proper archive name based on architecture
     TARGETS_PREFIX      "jmb_"                             # prefix used by all targets directly linked to this plugin
-    VST_SOURCES         "${vst_sources}" "${vst2_sources}" # the source files that compose the plugin
+    VST_SOURCES         "${vst_sources}"                   # the source files that compose the plugin
     INCLUDE_DIRECTORIES "${VERSION_DIR}"                   # we add the version folder to the list of includes
     UIDESC              "${RES_DIR}/JSGain.uidesc"         # the main xml file for the GUI
     RESOURCES           "${vst_resources}"                 # the resources for the GUI (png files)
