@@ -198,6 +198,9 @@ For windows, follow the same steps for macOS with the following changes:
 Release Notes
 -------------
 
+### 2024-11-29 - `v2.1.0`
+* use latest version of Jamba (v7.1.2)
+
 ### 2023-05-25 - `v2.0.0`
 * use latest version of Jamba (v7.0.0) / removed support for VST2
 
