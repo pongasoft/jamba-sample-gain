@@ -8,7 +8,7 @@ set(JAMBA_MACOS_DEPLOYMENT_TARGET "10.14" CACHE STRING "macOS deployment target"
 
 # To use local jamba install, uncomment the following line (no download)
 set(JAMBA_ROOT_DIR "")
-set(JAMBA_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pongasoft/jamba")
+#set(JAMBA_ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}/../../pongasoft/jamba")
 
 # download jamba framework
 include(fetch_jamba.cmake)
@@ -18,7 +18,7 @@ include("${JAMBA_ROOT_DIR}/cmake/JambaSetArchitecture.cmake")
 
 set(PLUGIN_MAJOR_VERSION 2)
 set(PLUGIN_MINOR_VERSION 1)
-set(PLUGIN_PATCH_VERSION 0)
+set(PLUGIN_PATCH_VERSION 1)
 set(PLUGIN_VERSION "${PLUGIN_MAJOR_VERSION}.${PLUGIN_MINOR_VERSION}.${PLUGIN_PATCH_VERSION}")
 
 project("jamba-sample-gain" VERSION "${PLUGIN_VERSION}")

@@ -198,6 +198,9 @@ For windows, follow the same steps for macOS with the following changes:
 Release Notes
 -------------
 
+### 2024-12-02 - `v2.1.1`
+* use latest version of Jamba (v7.1.3)
+
 ### 2024-11-29 - `v2.1.0`
 * use latest version of Jamba (v7.1.2)
 
