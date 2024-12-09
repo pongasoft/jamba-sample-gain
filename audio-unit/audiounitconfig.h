@@ -25,7 +25,7 @@
 
 /* A manufacturer code for the audio unit, such as Aaud. This value must be exactly 4 alphanumeric characters.
  * Manufacturer OSType should have at least one non-lower case character */
-#define kAUPluginManufacturer 		JSGa
+#define kAUPluginManufacturer 		Psft
 
 // Definitions for the resource file
 #define kAudioUnitName				      "pongasoft: JambaSampleGain" // same as kAUPluginName
