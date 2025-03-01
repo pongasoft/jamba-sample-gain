@@ -1,0 +1,37 @@
+name: Run Tests (macOS)
+
+on:
+  push:
+    branches:
+      - 'master'
+    tags-ignore:
+      - '*'
+
+jobs:
+  run_tests:
+    strategy:
+      matrix:
+        os: [macos-13, macos-14]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Project (dry run)
+        working-directory: ${{github.workspace}}
+        run: ${{github.workspace}}/jamba-sample-gain/configure.py -n -- -DJAMBA_DOWNLOAD_VSTSDK=ON
+
+      - name: Configure Project
+        working-directory: ${{github.workspace}}
+        run: ${{github.workspace}}/jamba-sample-gain/configure.py -- -DJAMBA_DOWNLOAD_VSTSDK=ON
+
+      - name: Run test/validate/archive (Release)
+        working-directory: ${{github.workspace}}/build
+        run: ./jamba.sh --release -b test validate archive
+
+      - name: Run test/validate/archive (Debug)
+        working-directory: ${{github.workspace}}/build
+        run: ./jamba.sh -b test validate archive

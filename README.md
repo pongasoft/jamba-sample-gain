@@ -198,6 +198,10 @@ For windows, follow the same steps for macOS with the following changes:
 Release Notes
 -------------
 
+### 2025-03-01 - `v2.2.0`
+* use latest version of Jamba (v7.2.0)
+* Added GitHub workflow to check that it compiles properly
+
 ### 2024-12-09 - `v2.1.2`
 * use latest version of Jamba (v7.1.4)
 
