@@ -123,7 +123,7 @@ The following steps describes how to build the plugin:
         Notes
         ---vst3 defaults to /Users/Shared/Steinberg/VST_SDK.<JAMBA_VST3SDK_VERSION>
         
-        -G defaults to "Xcode" on macOS and "Visual Studio 16 2019" for Windows10
+        -G defaults to "Xcode" on macOS and "Visual Studio 17 2022" for Windows10
         run 'cmake --help' to get the list of generators supported
         
         For single-config generators, Debug is used by default and can be changed with -r for Release
@@ -197,6 +197,11 @@ For windows, follow the same steps for macOS with the following changes:
 
 Release Notes
 -------------
+
+### 2025-06-06 - `v2.2.1`
+* use latest version of Jamba (v7.2.1)
+* uses `Visual Studio 17 2022` on Windows for the generator
+* removed automated testing for `windows-2019` (removed from GitHub workflow) and added `windows-2025`
 
 ### 2025-03-01 - `v2.2.0`
 * use latest version of Jamba (v7.2.0)
